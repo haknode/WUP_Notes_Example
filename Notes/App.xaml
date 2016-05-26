@@ -1,0 +1,36 @@
+﻿<Application x:Class="Notes.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converter="using:Notes.Converter"
+             xmlns:model="using:NotesPCL.Model"
+             xmlns:viewModel="using:Notes.ViewModel"
+             RequestedTheme="Light">
+
+    <Application.Resources>
+        <viewModel:ViewModelLocator x:Key="ViewModelLocator" />
+        <converter:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
+        <converter:DateTimeToDateTimeOffsetConverter x:Key="DateTimeToDateTimeOffsetConverter" />
+        <converter:BoolToNullableBoolConverter x:Key="BoolToNullableBoolConverter" />
+        <converter:IntToStringConverter x:Key="IntToStringConverter" />
+
+        <Style x:Key="StretchedItemStyle"
+               TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Stretch" />
+        </Style>
+
+        <DataTemplate x:Key="NoteListItemTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"
+                           Text="{Binding Content}" />
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Created, Converter={StaticResource DateTimeToStringConverter}}"
+                           TextAlignment="Right" />
+            </Grid>
+        </DataTemplate>
+    </Application.Resources>
+</Application>
