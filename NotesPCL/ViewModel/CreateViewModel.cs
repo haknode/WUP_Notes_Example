@@ -28,7 +28,7 @@ namespace NotesPCL.ViewModel
 
         public void SaveNote()
         {
-            if (string.IsNullOrWhiteSpace(Content))
+            if (!string.IsNullOrWhiteSpace(Content))
             {
                 DataStorage.Notes.Add(new Note(Content, Now));
 

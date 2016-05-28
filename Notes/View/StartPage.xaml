@@ -11,9 +11,10 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" 
+        <TextBlock Grid.Row="0"
                    Text="Notes"
                    HorizontalAlignment="Stretch"
                    TextAlignment="Center"
@@ -21,30 +22,34 @@
                    FontWeight="Bold"
                    FontSize="20" />
 
-        <StackPanel Grid.Row="1"
-                    Padding="0,50,0,0">
-        <Button Content="Create"
-                Margin="20"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Click="{x:Bind ViewModel.NavigateToCreatePage}" />
-        <Button Content="List"
-                Margin="20"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Click="{x:Bind ViewModel.NavigateToListPage}" />
-        <Button Content="Search"
-                Margin="20"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Click="{x:Bind ViewModel.NavigateToSearchPage}" />
-        <Button Content="Settings"
-                Margin="20"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch" 
-                Click="{x:Bind ViewModel.NavigateToSettingsPage}"/>
+        <Image Grid.Row="1" 
+               Source="../note-4.png"
+               MaxHeight="50"/>
 
-    </StackPanel> 
+        <StackPanel Grid.Row="2"
+                    Padding="0,20,0,0">
+            <Button Content="Create"
+                    Margin="20"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Click="{x:Bind ViewModel.NavigateToCreatePage}" />
+            <Button Content="List"
+                    Margin="20"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Click="{x:Bind ViewModel.NavigateToListPage}" />
+            <Button Content="Search"
+                    Margin="20"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Click="{x:Bind ViewModel.NavigateToSearchPage}" />
+            <Button Content="Settings"
+                    Margin="20"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Click="{x:Bind ViewModel.NavigateToSettingsPage}" />
+
+        </StackPanel>
     </Grid>
-    
+
 </Page>
