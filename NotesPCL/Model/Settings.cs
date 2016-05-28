@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NotesPCL.Model
+﻿namespace NotesPCL.Model
 {
     public class Settings
     {
         public int NumberOfNotesInListView { get; set; }
 
-        public static Settings DefaultSettings => new Settings()
+        //returns a Settings object with the default settings
+        public static Settings DefaultSettings => new Settings
         {
             NumberOfNotesInListView = 10
         };

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
@@ -15,7 +11,7 @@ namespace Notes.Converter
             if (!(value is DateTime) || targetType != typeof(string))
                 return DependencyProperty.UnsetValue;
 
-            return ((DateTime)value).ToString("MMMM dd, yyyy - H:mm:ss");
+            return ((DateTime) value).ToString("MMMM dd, yyyy - H:mm:ss");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

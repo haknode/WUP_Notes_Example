@@ -1,21 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Views;
 using NotesPCL.Model;
 
 namespace NotesPCL.ViewModel
 {
+    /* 
+     * INPC is injected by Fody
+     */
     public class CreateViewModel : ViewModelBase
     {
+        private readonly IDataProvider dataProvider;
         private readonly IDialogService dialogService;
         private readonly INavigationService navigationService;
 
-        public CreateViewModel(INavigationService navigationService, IDialogService dialogService)
+        //Dependencies are injected by SimpleIOC
+        public CreateViewModel(IDataProvider dataProvider, INavigationService navigationService, IDialogService dialogService)
         {
+            this.dataProvider = dataProvider;
             this.dialogService = dialogService;
             this.navigationService = navigationService;
 
@@ -24,44 +26,46 @@ namespace NotesPCL.ViewModel
 
         public DateTime Now { get; set; }
 
-        public String Content { get; set; }
+        public string Content { get; set; }
 
         public void SaveNote()
         {
+            //if the note is not empty, save it and navigate back
             if (!string.IsNullOrWhiteSpace(Content))
             {
-                DataStorage.Notes.Add(new Note(Content, Now));
+                dataProvider.AddNote(new Note(Content, Now));
 
                 Clear();
 
                 navigationService.GoBack();
             }
-                
         }
 
         public void Cancel()
         {
+            //if the note is empty, go back without the showing the confirm dialog
             if (string.IsNullOrWhiteSpace(Content))
             {
                 Clear();
                 navigationService.GoBack();
             }
             else
-            {
-                dialogService.ShowMessage("Your note was not saved! Go back without saving?", "Continue without Saving?", "Continue", "Cancel", (confirmed) =>
-                     {
-                         if (confirmed)
-                         {
-                             Clear();
-                             navigationService.GoBack();
-                         }
-                     });
+            {   //show a dialog to confirm 
+                dialogService.ShowMessage("Your note was not saved! Go back without saving?", "Continue without Saving?",
+                    "Continue", "Cancel", confirmed =>
+                    {
+                        if (confirmed)
+                        {
+                            Clear();
+                            navigationService.GoBack();
+                        }
+                    });
             }
         }
 
         private void Clear()
         {
-            Content = String.Empty;
+            Content = string.Empty;
             Now = DateTime.Now;
         }
     }

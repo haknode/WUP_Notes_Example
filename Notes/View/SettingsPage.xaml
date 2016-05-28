@@ -29,11 +29,11 @@
         <TextBlock Grid.Row="1"
                    Grid.Column="0"
                    VerticalAlignment="Center"
-                   Text="Number of Notes in list view"/>
+                   Text="Number of Notes in list view" />
         <TextBox Grid.Row="1"
                  Grid.Column="1"
                  InputScope="Number"
-                 Text="{x:Bind ViewModel.NumberOfNotesInListView, Mode=TwoWay, Converter={StaticResource IntToStringConverter}}"/>
+                 Text="{x:Bind ViewModel.NumberOfNotesInListView, Mode=TwoWay, Converter={StaticResource IntToStringConverter}}" />
 
     </Grid>
 </Page>

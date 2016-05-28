@@ -1,13 +1,17 @@
-﻿using System;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Views;
+using NotesPCL.View;
 
 namespace NotesPCL.ViewModel
 {
+    /* 
+     * INPC is injected by Fody
+     */
     public class StartViewModel : ViewModelBase
     {
         private readonly INavigationService navigationService;
 
+        //Dependencies are injected by SimpleIOC
         public StartViewModel(INavigationService navigationService)
         {
             this.navigationService = navigationService;

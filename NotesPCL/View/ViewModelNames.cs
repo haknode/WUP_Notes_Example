@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NotesPCL.ViewModel
+﻿namespace NotesPCL.View
 {
+    /*
+     * This class defines the corresponding names to our views (pages).
+     * The names are used from the NavigationService.
+     */
+
     public class ViewModelNames
     {
         public static readonly string CreatePage = "CreatePage";

@@ -16,7 +16,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0"
-                   Text="Create"
+                   Text="New Note"
                    HorizontalAlignment="Stretch"
                    TextAlignment="Center"
                    Padding="10"
@@ -34,7 +34,8 @@
                  TextWrapping="Wrap"
                  VerticalAlignment="Stretch"
                  HorizontalAlignment="Stretch"
-                 Text="{x:Bind ViewModel.Content, Mode=TwoWay}" />
+                 InputScope="Text"
+                 Text="{Binding Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 
     <Page.BottomAppBar>

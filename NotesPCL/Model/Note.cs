@@ -1,17 +1,16 @@
 ﻿using System;
-using GalaSoft.MvvmLight;
 
 namespace NotesPCL.Model
 {
-    public class Note : ViewModelBase
+    public class Note
     {
-        public Note(String content, DateTime created)
+        public Note(string content, DateTime created)
         {
             Content = content;
             Created = created;
         }
 
-        public String Content { get; set; }
+        public string Content { get; set; }
         public DateTime Created { get; set; }
     }
 }

@@ -36,7 +36,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Model\DataStorage.cs" />
+    <Compile Include="Model\DemoDataProvider.cs" />
+    <Compile Include="Model\IDataProvider.cs" />
     <Compile Include="Model\Note.cs" />
     <Compile Include="Model\Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -45,7 +46,7 @@
     <Compile Include="ViewModel\SearchViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\StartViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelNames.cs" />
+    <Compile Include="View\ViewModelNames.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">

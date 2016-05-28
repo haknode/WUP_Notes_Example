@@ -1,19 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
+using NotesPCL.Model;
 
 namespace NotesPCL.ViewModel
 {
+    /* 
+     * INPC is injected by Fody
+     */
     public class SettingsViewModel : ViewModelBase
     {
-        public SettingsViewModel()
+        private readonly IDataProvider dataProvider;
+
+        private Settings settings;
+
+        //Dependencies are injected by SimpleIOC
+        public SettingsViewModel(IDataProvider dataProvider)
         {
-            NumberOfNotesInListView = 5;
+            this.dataProvider = dataProvider;
+
+            settings = dataProvider.GetSettings();
         }
 
-        public int NumberOfNotesInListView { get; set; }
+        public int NumberOfNotesInListView
+        {
+            get
+            {
+                return settings.NumberOfNotesInListView;
+            }
+            set
+            {
+                if (value == settings.NumberOfNotesInListView)
+                {
+                    settings.NumberOfNotesInListView = value;
+                    SaveSettings();
+                }
+            }
+        }
+
+        private void SaveSettings()
+        {
+            dataProvider.SetSettings(new Settings()
+            {
+                 NumberOfNotesInListView = NumberOfNotesInListView,
+            });
+        }
     }
 }

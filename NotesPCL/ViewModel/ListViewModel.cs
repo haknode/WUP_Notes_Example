@@ -1,23 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using NotesPCL.Model;
 
 namespace NotesPCL.ViewModel
 {
+    /* 
+     * INPC is injected by Fody
+     */
     public class ListViewModel : ViewModelBase
     {
+        private readonly IDataProvider dataProvider;
 
-        public ListViewModel()
+        private readonly int numberOfDisplayedNotes;
+
+        //Dependencies are injected by SimpleIOC
+        public ListViewModel(IDataProvider dataProvider)
         {
-            Notes = DataStorage.Notes;
-        }
-        public ObservableCollection<Note> Notes { get; set; }
+            this.dataProvider = dataProvider;
 
-        public String ListInfoText => $"Displaying the last {DataStorage.Settings.NumberOfNotesInListView} Notes.";
+            numberOfDisplayedNotes = dataProvider.GetSettings().NumberOfNotesInListView;
+
+            //get the notes from the data provider and save them in a local copy
+            //sort by creation date descending and take only the in the settings defined amount
+            foreach (var note in dataProvider.GetNotes().OrderByDescending(n => n.Created).Take(numberOfDisplayedNotes))
+            {
+                Notes.Add(note);
+            }
+
+        }
+
+        public ObservableCollection<Note> Notes { get; set; } = new ObservableCollection<Note>();
+
+        public string ListInfoText => $"Displaying the last {numberOfDisplayedNotes} Notes.";
     }
 }
