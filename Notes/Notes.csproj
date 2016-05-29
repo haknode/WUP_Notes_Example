@@ -101,7 +101,6 @@
     <Compile Include="Converter\BoolToNullableBoolConverter.cs" />
     <Compile Include="Converter\DateTimeToDateTimeOffsetConverter.cs" />
     <Compile Include="Converter\DateTimeToStringConverter.cs" />
-    <Compile Include="Converter\IntToStringConverter.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\CreatePage.xaml.cs">
       <DependentUpon>CreatePage.xaml</DependentUpon>

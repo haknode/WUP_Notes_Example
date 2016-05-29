@@ -24,7 +24,7 @@
                    FontSize="20" />
 
         <TextBlock Grid.Row="1"
-                   Text="{x:Bind ViewModel.Now, Mode=OneWay, Converter={StaticResource DateTimeToStringConverter}}"
+                   Text="{x:Bind ViewModel.CreationDateTime, Mode=OneWay, Converter={StaticResource DateTimeToStringConverter}}"
                    HorizontalAlignment="Right"
                    TextAlignment="Center"
                    Padding="10"

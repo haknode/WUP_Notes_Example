@@ -24,7 +24,7 @@ namespace NotesPCL.ViewModel
             Clear();
         }
 
-        public DateTime Now { get; set; }
+        public DateTime CreationDateTime { get; set; }
 
         public string Content { get; set; }
 
@@ -33,7 +33,7 @@ namespace NotesPCL.ViewModel
             //if the note is not empty, save it and navigate back
             if (!string.IsNullOrWhiteSpace(Content))
             {
-                dataProvider.AddNote(new Note(Content, Now));
+                dataProvider.AddNote(new Note(Content, CreationDateTime));
 
                 Clear();
 
@@ -66,7 +66,7 @@ namespace NotesPCL.ViewModel
         private void Clear()
         {
             Content = string.Empty;
-            Now = DateTime.Now;
+            CreationDateTime = DateTime.Now;
         }
     }
 }

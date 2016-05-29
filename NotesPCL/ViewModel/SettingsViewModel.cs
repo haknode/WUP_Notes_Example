@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System;
+using GalaSoft.MvvmLight;
 using NotesPCL.Model;
 
 namespace NotesPCL.ViewModel
@@ -10,38 +11,44 @@ namespace NotesPCL.ViewModel
     {
         private readonly IDataProvider dataProvider;
 
-        private Settings settings;
+        private String numberOfNotesInListView;
+
 
         //Dependencies are injected by SimpleIOC
         public SettingsViewModel(IDataProvider dataProvider)
         {
             this.dataProvider = dataProvider;
 
-            settings = dataProvider.GetSettings();
+            Settings settings = dataProvider.GetSettings();
+
+            NumberOfNotesInListView = settings.NumberOfNotesInListView.ToString();
         }
 
-        public int NumberOfNotesInListView
+        public String NumberOfNotesInListView { get; set; }
+
+        private bool IsNumberOfNotesInListViewValid(String value)
         {
-            get
-            {
-                return settings.NumberOfNotesInListView;
-            }
-            set
-            {
-                if (value == settings.NumberOfNotesInListView)
-                {
-                    settings.NumberOfNotesInListView = value;
-                    SaveSettings();
-                }
-            }
+            int intValue;
+
+            if (int.TryParse(value, out intValue) == false)
+                return false;
+
+            if (intValue < 0)
+                return false;
+
+            return true;
         }
 
-        private void SaveSettings()
+        public void SaveSettings()
         {
-            dataProvider.SetSettings(new Settings()
-            {
-                 NumberOfNotesInListView = NumberOfNotesInListView,
-            });
+            var newSettings = new Settings();
+
+            if (IsNumberOfNotesInListViewValid(NumberOfNotesInListView))
+                newSettings.NumberOfNotesInListView = int.Parse(NumberOfNotesInListView);
+            else
+                newSettings.NumberOfNotesInListView = Settings.DefaultSettings.NumberOfNotesInListView;
+
+            dataProvider.SetSettings(newSettings);
         }
     }
 }

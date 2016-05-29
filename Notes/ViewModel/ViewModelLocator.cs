@@ -50,6 +50,6 @@ namespace Notes.ViewModel
         public CreateViewModel CreateViewModel => ServiceLocator.Current.GetInstance<CreateViewModel>();
         public ListViewModel ListViewModel => ServiceLocator.Current.GetInstance<ListViewModel>(Guid.NewGuid().ToString());
         public SearchViewModel SearchViewModel => ServiceLocator.Current.GetInstance<SearchViewModel>(Guid.NewGuid().ToString());
-        public SettingsViewModel SettingsViewModel => ServiceLocator.Current.GetInstance<SettingsViewModel>();
+        public SettingsViewModel SettingsViewModel => ServiceLocator.Current.GetInstance<SettingsViewModel>(Guid.NewGuid().ToString());
     }
 }

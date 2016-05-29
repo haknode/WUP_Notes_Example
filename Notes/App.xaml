@@ -11,7 +11,6 @@
         <converter:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
         <converter:DateTimeToDateTimeOffsetConverter x:Key="DateTimeToDateTimeOffsetConverter" />
         <converter:BoolToNullableBoolConverter x:Key="BoolToNullableBoolConverter" />
-        <converter:IntToStringConverter x:Key="IntToStringConverter" />
 
         <!-- Style used to strech the items in a listview -->
         <Style x:Key="StretchedItemStyle"
