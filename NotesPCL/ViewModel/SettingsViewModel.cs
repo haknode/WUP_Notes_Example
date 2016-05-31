@@ -11,9 +11,6 @@ namespace NotesPCL.ViewModel
     {
         private readonly IDataProvider dataProvider;
 
-        private String numberOfNotesInListView;
-
-
         //Dependencies are injected by SimpleIOC
         public SettingsViewModel(IDataProvider dataProvider)
         {
