@@ -33,11 +33,13 @@
 
             <CalendarDatePicker PlaceholderText="From"
                                 MinWidth="150"
+                                MaxDate="{x:Bind ViewModel.FromDateMaxValue, Mode=OneWay}"
                                 Date="{x:Bind ViewModel.FromDate, Mode=TwoWay}" />
 
             <CalendarDatePicker PlaceholderText="To"
                                 Margin="20,0,0,0"
                                 MinWidth="150"
+                                MinDate="{x:Bind ViewModel.ToDateMinValue, Mode=OneWay}"
                                 Date="{x:Bind ViewModel.ToDate, Mode=TwoWay}" />
 
             <Button Content="Clear"

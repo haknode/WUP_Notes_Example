@@ -25,8 +25,10 @@ namespace NotesPCL.ViewModel
         public string SearchString { get; set; }
 
         public DateTimeOffset? FromDate { get; set; }
+        public DateTimeOffset FromDateMaxValue => ToDate ?? DateTimeOffset.MaxValue;
 
         public DateTimeOffset? ToDate { get; set; }
+        public DateTimeOffset ToDateMinValue => FromDate ?? DateTimeOffset.MinValue;
 
         public IEnumerable<Note> SearchResult
         {
