@@ -46,10 +46,10 @@ namespace Notes.ViewModel
          * Getters for the ViewModels. ListViewModel and SearchViewModel return a new instance every time.
          * The others always return the same insatance.
          */
-        public StartViewModel StartViewModel => ServiceLocator.Current.GetInstance<StartViewModel>();
-        public CreateViewModel CreateViewModel => ServiceLocator.Current.GetInstance<CreateViewModel>();
-        public ListViewModel ListViewModel => ServiceLocator.Current.GetInstance<ListViewModel>(Guid.NewGuid().ToString());
-        public SearchViewModel SearchViewModel => ServiceLocator.Current.GetInstance<SearchViewModel>(Guid.NewGuid().ToString());
-        public SettingsViewModel SettingsViewModel => ServiceLocator.Current.GetInstance<SettingsViewModel>(Guid.NewGuid().ToString());
+        public StartViewModel StartViewModel => SimpleIoc.Default.GetInstance<StartViewModel>();
+        public CreateViewModel CreateViewModel => SimpleIoc.Default.GetInstance<CreateViewModel>();
+        public ListViewModel ListViewModel => SimpleIoc.Default.GetInstance<ListViewModel>(Guid.NewGuid().ToString());
+        public SearchViewModel SearchViewModel => SimpleIoc.Default.GetInstance<SearchViewModel>(Guid.NewGuid().ToString());
+        public SettingsViewModel SettingsViewModel => SimpleIoc.Default.GetInstance<SettingsViewModel>(Guid.NewGuid().ToString());
     }
 }

@@ -14,53 +14,49 @@ namespace NotesPCL.ViewModel
     {
         private readonly IDataProvider dataProvider;
 
-        private readonly List<Note> notes = new List<Note>();
-
         //Dependencies are injected by SimpleIOC
         public SearchViewModel(IDataProvider dataProvider)
         {
             this.dataProvider = dataProvider;
 
-            //get the notes from the data provider and save them in a local copy
-            foreach (var note in dataProvider.GetNotes())
-            {
-                notes.Add(note);
-            }
-
-            //setup date selectors and disable them by default
-            FromDate = DateTime.Now.AddDays(-1);
-            ToDate = DateTime.Now;
-            UseDateForSearch = false;
+            ClearSearch();
         }
 
         public string SearchString { get; set; }
 
-        public DateTime FromDate { get; set; }
+        public DateTimeOffset? FromDate { get; set; }
 
-        public DateTime ToDate { get; set; }
-
-        public bool UseDateForSearch { get; set; }
+        public DateTimeOffset? ToDate { get; set; }
 
         public IEnumerable<Note> SearchResult
         {
             get
-            {   //if no search filters are specified, show all notes
-                IEnumerable<Note> result = notes;
+            {
+                return dataProvider.GetNotes().Where(note =>
+                {
+                    if (!string.IsNullOrEmpty(SearchString)
+                        && !note.Content.ToLower().Contains(SearchString.ToLower()))
+                        return false;
 
-                //if a search string is entered, filter the list
-                if (!string.IsNullOrEmpty(SearchString))
-                    result = result.Where(note => note.Content.ToLower().Contains(SearchString.ToLower()));
+                    if (FromDate.HasValue 
+                        && note.Created.Date.CompareTo(FromDate.Value.Date) < 0)
+                        return false;
 
-                //if filter by date is enabled 
-                if (UseDateForSearch && FromDate != null)
-                    result = result.Where(note => note.Created.Date.CompareTo(FromDate.Date) >= 0);
+                    if (ToDate.HasValue 
+                        && note.Created.Date.CompareTo(ToDate.Value.Date) > 0)
+                        return false;
 
-                //if filter by date is enabled
-                if (UseDateForSearch && ToDate != null)
-                    result = result.Where(note => note.Created.Date.CompareTo(ToDate.Date) <= 0);
-
-                return result;
+                    return true;    //return all elements by default
+                });
             }
+        }
+
+        public void ClearSearch()
+        {
+            //setup date selectors as empty and disable them by default
+            SearchString = String.Empty;
+            FromDate = null;
+            ToDate = null;
         }
     }
 }

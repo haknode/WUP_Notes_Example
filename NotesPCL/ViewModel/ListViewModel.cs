@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using GalaSoft.MvvmLight;
 using NotesPCL.Model;
@@ -20,17 +21,12 @@ namespace NotesPCL.ViewModel
             this.dataProvider = dataProvider;
 
             numberOfDisplayedNotes = dataProvider.GetSettings().NumberOfNotesInListView;
-
-            //get the notes from the data provider and save them in a local copy
-            //sort by creation date descending and take only the in the settings defined amount
-            foreach (var note in dataProvider.GetNotes().OrderByDescending(n => n.Created).Take(numberOfDisplayedNotes))
-            {
-                Notes.Add(note);
-            }
-
         }
 
-        public ObservableCollection<Note> Notes { get; set; } = new ObservableCollection<Note>();
+        //get the notes from the data provider and save them in a local copy
+        //sort by creation date descending and take only the in the settings defined amount
+        public IEnumerable<Note> Notes
+            => dataProvider.GetNotes().OrderByDescending(n => n.Created).Take(numberOfDisplayedNotes);
 
         public string ListInfoText => $"Displaying the last {numberOfDisplayedNotes} Notes.";
     }

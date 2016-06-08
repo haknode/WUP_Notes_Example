@@ -23,34 +23,26 @@
                    Padding="10"
                    FontWeight="Bold"
                    FontSize="20" />
+
         <TextBox Grid.Row="1"
                  Text="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <StackPanel Grid.Row="2"
-                    HorizontalAlignment="Right"
+                    HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Orientation="Horizontal">
-            <ToggleSwitch Header="Use Date"
-                          IsOn="{x:Bind ViewModel.UseDateForSearch, Mode=TwoWay}" />
 
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="From:"
-                           Margin="20,0,5,0"
-                           VerticalAlignment="Center"
-                           FontSize="18" />
-                <CalendarDatePicker VerticalAlignment="Center"
-                                    MaxDate="{x:Bind ViewModel.ToDate, Mode=OneWay, Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"
-                                    IsEnabled="{x:Bind ViewModel.UseDateForSearch, Mode=OneWay}"
-                                    Date="{x:Bind ViewModel.FromDate, Mode=TwoWay, Converter={StaticResource DateTimeToDateTimeOffsetConverter}}" />
-                <TextBlock Text="To:"
-                           Margin="20,0,5,0"
-                           VerticalAlignment="Center"
-                           FontSize="18" />
-                <CalendarDatePicker VerticalAlignment="Center"
-                                    MinDate="{x:Bind ViewModel.FromDate, Mode=OneWay, Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"
-                                    IsEnabled="{x:Bind ViewModel.UseDateForSearch, Mode=OneWay}"
-                                    Date="{x:Bind ViewModel.ToDate, Mode=TwoWay, Converter={StaticResource DateTimeToDateTimeOffsetConverter}}" />
+            <CalendarDatePicker PlaceholderText="From"
+                                MinWidth="150"
+                                Date="{x:Bind ViewModel.FromDate, Mode=TwoWay}" />
 
-            </StackPanel>
+            <CalendarDatePicker PlaceholderText="To"
+                                Margin="20,0,0,0"
+                                MinWidth="150"
+                                Date="{x:Bind ViewModel.ToDate, Mode=TwoWay}" />
+
+            <Button Content="Clear"
+                    Margin="20,0,0,0"
+                    Click="{x:Bind ViewModel.ClearSearch}" />
         </StackPanel>
 
         <ListView Grid.Row="3"

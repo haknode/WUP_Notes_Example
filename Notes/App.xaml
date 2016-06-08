@@ -9,7 +9,6 @@
     <Application.Resources>
         <viewModel:ViewModelLocator x:Key="ViewModelLocator" />
         <converter:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
-        <converter:DateTimeToDateTimeOffsetConverter x:Key="DateTimeToDateTimeOffsetConverter" />
         <converter:BoolToNullableBoolConverter x:Key="BoolToNullableBoolConverter" />
 
         <!-- Style used to strech the items in a listview -->
