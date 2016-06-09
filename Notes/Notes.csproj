@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="Converters\BoolToNullableBoolConverter.cs" />
     <Compile Include="Converters\DateTimeToStringConverter.cs" />
+    <Compile Include="Services\WupStorageService.cs" />
     <Compile Include="ViewModels\WupViewModelLocator.cs" />
     <Compile Include="Views\CreatePage.xaml.cs">
       <DependentUpon>CreatePage.xaml</DependentUpon>
@@ -158,9 +159,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\NotesPCL\NotesPCL.csproj">
       <Project>{68c26b0e-b9e3-480a-86c8-39d2ce40a496}</Project>

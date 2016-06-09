@@ -43,6 +43,7 @@ namespace NotesPCL.ViewModels
          * Getters for the ViewModels. ListViewModel and SearchViewModel return a new instance every time.
          * The others always return the same insatance.
          */
+         //TODO: donte return a new instance every time
         public StartViewModel StartViewModel => SimpleIoc.Default.GetInstance<StartViewModel>();
         public CreateViewModel CreateViewModel => SimpleIoc.Default.GetInstance<CreateViewModel>();
         public ListViewModel ListViewModel => SimpleIoc.Default.GetInstance<ListViewModel>(Guid.NewGuid().ToString());

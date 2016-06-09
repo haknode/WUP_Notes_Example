@@ -36,6 +36,8 @@ namespace Notes.Views
             ((App) Application.Current).OnBackRequested += OnBackRequested;
 
             dispatcherTimer.Start();    //start the dispatcherTimer
+
+            base.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -44,6 +46,8 @@ namespace Notes.Views
             ((App) Application.Current).OnBackRequested -= OnBackRequested;
 
             dispatcherTimer.Stop();  //stop the dispatcherTimer
+
+            base.OnNavigatedFrom(e);
         }
     }
 }

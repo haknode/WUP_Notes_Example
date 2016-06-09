@@ -22,52 +22,51 @@ namespace NotesPCL.ViewModels
             this.dialogService = dialogService;
             this.navigationService = navigationService;
 
-            Clear();
+            ClearAndGoBack();
         }
 
         public DateTime CreationDateTime { get; set; }
 
         public string Content { get; set; }
 
+        public Boolean CanSave => !string.IsNullOrWhiteSpace(Content);
+
         public void SaveNote()
         {
             //if the note is not empty, save it and navigate back
-            if (!string.IsNullOrWhiteSpace(Content))
+            if (CanSave)
             {
                 dataService.AddNote(new Note(Content, CreationDateTime));
 
-                Clear();
-
-                navigationService.GoBack();
+                ClearAndGoBack();
             }
         }
 
-        public void Cancel()
+        public async void Cancel()
         {
             //if the note is empty, go back without the showing the confirm dialog
             if (string.IsNullOrWhiteSpace(Content))
             {
-                Clear();
-                navigationService.GoBack();
+                ClearAndGoBack();
             }
             else
             {   //show a dialog to confirm 
-                dialogService.ShowMessage("Your note was not saved! Go back without saving?", "Continue without Saving?",
-                    "Continue", "Cancel", confirmed =>
-                    {
-                        if (confirmed)
-                        {
-                            Clear();
-                            navigationService.GoBack();
-                        }
-                    });
+                var confirmed = await dialogService.ShowMessage("Your note was not saved! Go back without saving?", "Continue without Saving?",
+                    "Continue", "Cancel", isOkPressed => { /* Do Nothing */ });
+
+                if (confirmed)
+                {
+                    ClearAndGoBack();
+                }
             }
         }
 
-        private void Clear()
+        private void ClearAndGoBack()
         {
             Content = string.Empty;
             CreationDateTime = DateTime.Now;
+
+            navigationService.GoBack();
         }
     }
 }

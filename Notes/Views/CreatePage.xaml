@@ -42,6 +42,7 @@
         <CommandBar>
             <AppBarButton Icon="Save"
                           Label="Save"
+                          IsEnabled="{x:Bind ViewModel.CanSave, Mode=OneWay}"
                           Click="{x:Bind ViewModel.SaveNote}" />
             <AppBarButton Icon="Cancel"
                           Label="Cancel"

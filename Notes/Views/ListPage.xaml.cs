@@ -1,4 +1,5 @@
 ﻿using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 using NotesPCL.ViewModels;
 
 namespace Notes.Views
@@ -11,5 +12,11 @@ namespace Notes.Views
         }
 
         public ListViewModel ViewModel => (ListViewModel) DataContext;
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            ViewModel.Load();
+            base.OnNavigatedTo(e);
+        }
     }
 }

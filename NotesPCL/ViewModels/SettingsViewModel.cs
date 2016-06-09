@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using GalaSoft.MvvmLight;
 using NotesPCL.Models;
 using NotesPCL.Services;
@@ -18,11 +19,7 @@ namespace NotesPCL.ViewModels
         {
             this.dataService = dataService;
 
-            Settings settings = dataService.GetSettings();
-
-            NumberOfNotesInListView = settings.NumberOfNotesInListView.ToString();
-
-            SortingOrdersList = new List<string>()
+            SortingOrdersList = new string[]
             {
                 "Ascending",
                 "Descending",
@@ -31,15 +28,15 @@ namespace NotesPCL.ViewModels
 
         public String NumberOfNotesInListView { get; set; }
 
-        public List<String> SortingOrdersList { get; }
+        public String[] SortingOrdersList { get; }
 
-        public String SortingOrder { get; set; }
+        public int SortingOrder { get; set; }
 
-        private bool IsNumberOfNotesInListViewValid(String value)
+        private bool IsNumberOfNotesInListViewValid()
         {
             int intValue;
 
-            if (int.TryParse(value, out intValue) == false)
+            if (int.TryParse(NumberOfNotesInListView, out intValue) == false)
                 return false;
 
             if (intValue < 0)
@@ -48,16 +45,32 @@ namespace NotesPCL.ViewModels
             return true;
         }
 
-        public void SaveSettings()
+        private bool IsSortingOrderValid()
         {
-            var newSettings = new Settings();
+            return SortingOrder >= 0 && SortingOrder <= 1;
+        }
 
-            if (IsNumberOfNotesInListViewValid(NumberOfNotesInListView))
-                newSettings.NumberOfNotesInListView = int.Parse(NumberOfNotesInListView);
-            else
-                newSettings.NumberOfNotesInListView = Settings.DefaultSettings.NumberOfNotesInListView;
+        //TODO: save and load in navigatedto
+        public void Load()
+        {
+            Settings settings = dataService.GetSettings();
 
-            dataService.SetSettings(newSettings);
+            NumberOfNotesInListView = settings.NumberOfNotesInListView.ToString();
+            SortingOrder = settings.SortAsscending ? 0 : 1;
+        }
+
+        public void Save()
+        {
+            if (IsNumberOfNotesInListViewValid() && IsSortingOrderValid())
+            {
+                var newSettings = new Settings
+                {
+                    NumberOfNotesInListView = int.Parse(NumberOfNotesInListView),
+                    SortAsscending = SortingOrder == 0
+                };
+
+                dataService.SetSettings(newSettings);
+            }
         }
     }
 }
