@@ -1,8 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Views;
-using NotesPCL.View;
+using NotesPCL.Views;
 
-namespace NotesPCL.ViewModel
+namespace NotesPCL.ViewModels
 {
     /* 
      * INPC is injected by Fody

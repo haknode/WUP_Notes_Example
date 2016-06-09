@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using GalaSoft.MvvmLight;
-using NotesPCL.Model;
+using NotesPCL.Models;
+using NotesPCL.Services;
 
-namespace NotesPCL.ViewModel
+namespace NotesPCL.ViewModels
 {
     /* 
      * INPC is injected by Fody
      */
     public class SearchViewModel : ViewModelBase
     {
-        private readonly IDataProvider dataProvider;
+        private readonly IDataService dataService;
 
         //Dependencies are injected by SimpleIOC
-        public SearchViewModel(IDataProvider dataProvider)
+        public SearchViewModel(IDataService dataService)
         {
-            this.dataProvider = dataProvider;
+            this.dataService = dataService;
 
             ClearSearch();
         }
@@ -34,7 +34,7 @@ namespace NotesPCL.ViewModel
         {
             get
             {
-                return dataProvider.GetNotes().Where(note =>
+                return dataService.GetNotes().Where(note =>
                 {
                     if (!string.IsNullOrEmpty(SearchString)
                         && !note.Content.ToLower().Contains(SearchString.ToLower()))

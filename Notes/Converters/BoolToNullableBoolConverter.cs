@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
 
-namespace Notes.Converter
+namespace Notes.Converters
 {
     public class BoolToNullableBoolConverter : IValueConverter
     {

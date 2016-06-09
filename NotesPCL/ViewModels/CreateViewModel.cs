@@ -1,23 +1,24 @@
 ﻿using System;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Views;
-using NotesPCL.Model;
+using NotesPCL.Models;
+using NotesPCL.Services;
 
-namespace NotesPCL.ViewModel
+namespace NotesPCL.ViewModels
 {
     /* 
      * INPC is injected by Fody
      */
     public class CreateViewModel : ViewModelBase
     {
-        private readonly IDataProvider dataProvider;
+        private readonly IDataService dataService;
         private readonly IDialogService dialogService;
         private readonly INavigationService navigationService;
 
         //Dependencies are injected by SimpleIOC
-        public CreateViewModel(IDataProvider dataProvider, INavigationService navigationService, IDialogService dialogService)
+        public CreateViewModel(IDataService dataService, INavigationService navigationService, IDialogService dialogService)
         {
-            this.dataProvider = dataProvider;
+            this.dataService = dataService;
             this.dialogService = dialogService;
             this.navigationService = navigationService;
 
@@ -33,7 +34,7 @@ namespace NotesPCL.ViewModel
             //if the note is not empty, save it and navigate back
             if (!string.IsNullOrWhiteSpace(Content))
             {
-                dataProvider.AddNote(new Note(Content, CreationDateTime));
+                dataService.AddNote(new Note(Content, CreationDateTime));
 
                 Clear();
 

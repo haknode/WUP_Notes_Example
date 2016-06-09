@@ -1,27 +1,39 @@
 ﻿using System;
+using System.Collections.Generic;
 using GalaSoft.MvvmLight;
-using NotesPCL.Model;
+using NotesPCL.Models;
+using NotesPCL.Services;
 
-namespace NotesPCL.ViewModel
+namespace NotesPCL.ViewModels
 {
     /* 
      * INPC is injected by Fody
      */
     public class SettingsViewModel : ViewModelBase
     {
-        private readonly IDataProvider dataProvider;
+        private readonly IDataService dataService;
 
         //Dependencies are injected by SimpleIOC
-        public SettingsViewModel(IDataProvider dataProvider)
+        public SettingsViewModel(IDataService dataService)
         {
-            this.dataProvider = dataProvider;
+            this.dataService = dataService;
 
-            Settings settings = dataProvider.GetSettings();
+            Settings settings = dataService.GetSettings();
 
             NumberOfNotesInListView = settings.NumberOfNotesInListView.ToString();
+
+            SortingOrdersList = new List<string>()
+            {
+                "Ascending",
+                "Descending",
+            };
         }
 
         public String NumberOfNotesInListView { get; set; }
+
+        public List<String> SortingOrdersList { get; }
+
+        public String SortingOrder { get; set; }
 
         private bool IsNumberOfNotesInListViewValid(String value)
         {
@@ -45,7 +57,7 @@ namespace NotesPCL.ViewModel
             else
                 newSettings.NumberOfNotesInListView = Settings.DefaultSettings.NumberOfNotesInListView;
 
-            dataProvider.SetSettings(newSettings);
+            dataService.SetSettings(newSettings);
         }
     }
 }

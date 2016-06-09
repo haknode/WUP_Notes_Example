@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using NotesPCL.Models;
 
-namespace NotesPCL.Model
+namespace NotesPCL.Services
 {
     //This interface defines how we access the data
-    public interface IDataProvider
+    public interface IDataService
     {
         IEnumerable<Note> GetNotes();
         void AddNote(Note newNote);

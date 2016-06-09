@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using NotesPCL.Models;
 
-namespace NotesPCL.Model
+namespace NotesPCL.Services
 {
     //This class provides default test data for our app
-    public class DemoDataProvider : IDataProvider
+    public class DemoDataService : IDataService
     {
         private List<Note> notes;
         private Settings setting;
 
-        public DemoDataProvider()
+        public DemoDataService()
         {
             notes = new List<Note>();
             setting = Settings.DefaultSettings;

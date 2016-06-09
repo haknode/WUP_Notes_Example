@@ -2,7 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
-namespace Notes.Converter
+namespace Notes.Converters
 {
     public class DateTimeToStringConverter : IValueConverter
     {

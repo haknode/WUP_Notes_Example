@@ -1,13 +1,12 @@
 ﻿<Application x:Class="Notes.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:converter="using:Notes.Converter"
-             xmlns:model="using:NotesPCL.Model"
-             xmlns:viewModel="using:Notes.ViewModel"
+             xmlns:converter="using:Notes.Converters"
+             xmlns:viewModel="using:Notes.ViewModels"
              RequestedTheme="Light">
 
     <Application.Resources>
-        <viewModel:ViewModelLocator x:Key="ViewModelLocator" />
+        <viewModel:WupViewModelLocator x:Key="ViewModelLocator" />
         <converter:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
         <converter:BoolToNullableBoolConverter x:Key="BoolToNullableBoolConverter" />
 

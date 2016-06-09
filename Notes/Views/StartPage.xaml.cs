@@ -1,7 +1,7 @@
 ﻿using Windows.UI.Xaml.Controls;
-using NotesPCL.ViewModel;
+using NotesPCL.ViewModels;
 
-namespace Notes.View
+namespace Notes.Views
 {
     public sealed partial class StartPage : Page
     {

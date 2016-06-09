@@ -1,4 +1,4 @@
-﻿namespace NotesPCL.View
+﻿namespace NotesPCL.Views
 {
     /*
      * This class defines the corresponding names to our views (pages).

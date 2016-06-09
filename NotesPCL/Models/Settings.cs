@@ -1,4 +1,4 @@
-﻿namespace NotesPCL.Model
+﻿namespace NotesPCL.Models
 {
     public class Settings
     {
