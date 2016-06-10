@@ -7,7 +7,10 @@ namespace NotesPCL.Services
     public interface IDataService
     {
         IEnumerable<Note> GetNotes();
-        void AddNote(Note newNote);
+        Note GetNote();
+        void AddNote(Note note);
+        void RemoveNote(Note note);
+        void RemoveAllNotes();
         Settings GetSettings();
         void SetSettings(Settings newSettings);
     }

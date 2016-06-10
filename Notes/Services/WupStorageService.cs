@@ -15,20 +15,25 @@ namespace Notes.Services
             localSettingsContainer = ApplicationData.Current.LocalSettings;
         }
 
-        public void Save<T>(string key, T value)
+        public void Write<T>(string key, T value)
         {
             var jsonString = SerializeObject(value);
             localSettingsContainer.Values[key] = jsonString;
         }
 
-        public T Load<T>(string key)
+        public T Read<T>(string key, T defaultValue)
         {
             if (localSettingsContainer.Values.ContainsKey(key))
             {
-                return DeserializeObject<T>(localSettingsContainer.Values[key].ToString());
+                var jsonString = localSettingsContainer.Values[key] as string;
+                return DeserializeObject<T>(jsonString);
             }
 
-            return default(T);
+            return defaultValue;
+        }
+        public T Read<T>(string key)
+        {
+            return Read<T>(key, default(T));
         }
     }
 }

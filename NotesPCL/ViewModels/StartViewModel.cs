@@ -19,22 +19,22 @@ namespace NotesPCL.ViewModels
 
         public void NavigateToCreatePage()
         {
-            navigationService.NavigateTo(ViewModelNames.CreatePage);
+            navigationService.NavigateTo(ViewNames.CreatePage);
         }
 
         public void NavigateToListPage()
         {
-            navigationService.NavigateTo(ViewModelNames.ListPage);
+            navigationService.NavigateTo(ViewNames.ListPage);
         }
 
         public void NavigateToSearchPage()
         {
-            navigationService.NavigateTo(ViewModelNames.SearchPage);
+            navigationService.NavigateTo(ViewNames.SearchPage);
         }
 
         public void NavigateToSettingsPage()
         {
-            navigationService.NavigateTo(ViewModelNames.SettingsPage);
+            navigationService.NavigateTo(ViewNames.SettingsPage);
         }
     }
 }

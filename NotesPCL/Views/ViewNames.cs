@@ -5,7 +5,7 @@
      * The names are used from the NavigationService.
      */
 
-    public class ViewModelNames
+    public class ViewNames
     {
         public static readonly string CreatePage = "CreatePage";
         public static readonly string ListPage = "ListPage";

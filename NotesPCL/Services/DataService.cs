@@ -6,12 +6,12 @@ using NotesPCL.Models;
 namespace NotesPCL.Services
 {
     //This class provides default test data for our app
-    public class DemoDataService : IDataService
+    public class DataService : IDataService
     {
-        private List<Note> notes;
+        private readonly List<Note> notes;
         private Settings setting;
 
-        public DemoDataService()
+        public DataService()
         {
             notes = new List<Note>();
             setting = Settings.DefaultSettings;
@@ -22,6 +22,21 @@ namespace NotesPCL.Services
         public IEnumerable<Note> GetNotes()
         {
             return this.notes;
+        }
+
+        public Note GetNote()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveNote(Note delNote)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveAllNotes()
+        {
+            this.notes.Clear();
         }
 
         public void AddNote(Note newNote)

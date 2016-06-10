@@ -8,8 +8,10 @@ namespace NotesPCL.Services
 {
     public interface IStorageService
     {
-        void Save<T>(String key, T value);
+        void Write<T>(string key, T value);
 
-        T Load<T>(String key);
+        T Read<T>(string key);
+
+        T Read<T>(string key, T defaultValue);
     }
 }

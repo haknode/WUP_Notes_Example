@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using GalaSoft.MvvmLight;
+using Microsoft.Practices.ServiceLocation;
 using NotesPCL.Models;
 using NotesPCL.Services;
 
@@ -71,6 +72,30 @@ namespace NotesPCL.ViewModels
 
                 dataService.SetSettings(newSettings);
             }
+        }
+
+        public void LoadNotesFromInternalStorage()
+        {
+            var storageService = ServiceLocator.Current.GetInstance<IStorageService>();
+
+            var loadedSettings = storageService.Read<Settings>("Settings", Settings.DefaultSettings);
+            dataService.SetSettings(loadedSettings);
+
+
+            var loadedNotes = storageService.Read<IEnumerable<Note>>("Notes", new List<Note>());
+            dataService.RemoveAllNotes();
+            foreach (var note in loadedNotes)
+            {
+                dataService.AddNote(note);
+            }
+        }
+
+        public void SaveNotesToInternalStorage()
+        {
+            var storageService = ServiceLocator.Current.GetInstance<IStorageService>();
+
+            storageService.Write("Settings", dataService.GetSettings());
+            storageService.Write("Notes", dataService.GetNotes());
         }
     }
 }
