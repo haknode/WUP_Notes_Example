@@ -40,6 +40,11 @@
 
     <Page.BottomAppBar>
         <CommandBar>
+            <AppBarButton Icon="Delete"
+                          Label="Delete"
+                          IsEnabled="{x:Bind ViewModel.CanDelete, Mode=OneWay}"
+                          Visibility="{Binding CanDelete, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                          Click="{x:Bind ViewModel.DeleteNote}" />
             <AppBarButton Icon="Save"
                           Label="Save"
                           IsEnabled="{x:Bind ViewModel.CanSave, Mode=OneWay}"

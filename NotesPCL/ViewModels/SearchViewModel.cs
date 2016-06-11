@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Views;
 using NotesPCL.Models;
 using NotesPCL.Services;
+using NotesPCL.Views;
 
 namespace NotesPCL.ViewModels
 {
@@ -12,11 +14,13 @@ namespace NotesPCL.ViewModels
      */
     public class SearchViewModel : ViewModelBase
     {
+        private readonly INavigationService navigationService;
         private readonly IDataService dataService;
 
         //Dependencies are injected by SimpleIOC
-        public SearchViewModel(IDataService dataService)
+        public SearchViewModel(INavigationService navigationService, IDataService dataService)
         {
+            this.navigationService = navigationService;
             this.dataService = dataService;
 
             ClearSearch();
@@ -59,6 +63,11 @@ namespace NotesPCL.ViewModels
             SearchString = String.Empty;
             FromDate = null;
             ToDate = null;
+        }
+
+        public void EditNote(Note note)
+        {
+            navigationService.NavigateTo(ViewNames.CreatePage, note.Id);
         }
     }
 }

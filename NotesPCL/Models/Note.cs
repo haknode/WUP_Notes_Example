@@ -4,12 +4,12 @@ namespace NotesPCL.Models
 {
     public class Note
     {
-        public Note(string content, DateTime created)
+        public Note()
         {
-            Content = content;
-            Created = created;
+            Id = Guid.NewGuid();
         }
 
+        public Guid Id { get; private set; }
         public string Content { get; set; }
         public DateTime Created { get; set; }
     }

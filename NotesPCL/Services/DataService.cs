@@ -8,12 +8,12 @@ namespace NotesPCL.Services
     //This class provides default test data for our app
     public class DataService : IDataService
     {
-        private readonly List<Note> notes;
+        private readonly Dictionary<Guid, Note> notes;
         private Settings setting;
 
         public DataService()
         {
-            notes = new List<Note>();
+            notes = new Dictionary<Guid, Note>();
             setting = Settings.DefaultSettings;
 
             InsertTestData(4);
@@ -21,44 +21,48 @@ namespace NotesPCL.Services
 
         public IEnumerable<Note> GetNotes()
         {
-            return this.notes;
+            return notes.Values;
         }
 
-        public Note GetNote()
+        public Note GetNote(Guid id)
         {
-            throw new NotImplementedException();
+            return notes[id];
         }
 
-        public void RemoveNote(Note delNote)
+        public void RemoveNote(Guid id)
         {
-            throw new NotImplementedException();
+            notes.Remove(id);
         }
 
         public void RemoveAllNotes()
         {
-            this.notes.Clear();
+            notes.Clear();
         }
 
-        public void AddNote(Note newNote)
+        public void AddOrUpdateNote(Note newNote)
         {
-            notes.Add(newNote);
+            notes[newNote.Id] = newNote;
         }
 
         public Settings GetSettings()
         {
-            return this.setting;
+            return setting;
         }
 
         public void SetSettings(Settings newSettings)
         {
-            this.setting = newSettings;
+            setting = newSettings;
         }
 
         private void InsertTestData(int num)
         {
             for (var i = 0; i < num; ++i)
             {
-                AddNote(new Note("This is Note " + i, DateTime.Now.AddMonths(-1*i)));
+                AddOrUpdateNote(new Note
+                                {
+                                    Content = "This is Note " + i,
+                                    Created = DateTime.Now.AddMonths(-1 * i),
+                                });
             }
         }
     }

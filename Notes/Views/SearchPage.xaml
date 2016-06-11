@@ -50,7 +50,9 @@
         <ListView Grid.Row="3"
                   ItemContainerStyle="{StaticResource StretchedItemStyle}"
                   ItemTemplate="{StaticResource NoteListItemTemplate}"
-                  ItemsSource="{x:Bind ViewModel.SearchResult, Mode=OneWay}" />
+                  ItemsSource="{x:Bind ViewModel.SearchResult, Mode=OneWay}"
+                  IsItemClickEnabled="True"
+                  ItemClick="NotesListView_OnItemClick"/>
 
     </Grid>
 </Page>

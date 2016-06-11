@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Views;
 using NotesPCL.Models;
 using NotesPCL.Services;
+using NotesPCL.Views;
 
 namespace NotesPCL.ViewModels
 {
@@ -12,16 +14,17 @@ namespace NotesPCL.ViewModels
      */
     public class ListViewModel : ViewModelBase
     {
+        private readonly INavigationService navigationService;
         private readonly IDataService dataService;
 
         private int numberOfDisplayedNotes;
         private bool sortAscending;
 
         //Dependencies are injected by SimpleIOC
-        public ListViewModel(IDataService dataService)
+        public ListViewModel(INavigationService navigationService, IDataService dataService)
         {
+            this.navigationService = navigationService;
             this.dataService = dataService;
-
         }
 
         public void Load()
@@ -50,6 +53,11 @@ namespace NotesPCL.ViewModels
                 var sortString = sortAscending ? "ascending" : "descending";
                 return $"Displaying the last {numberOfDisplayedNotes} Notes in {sortString} order.";
             }
+        }
+
+        public void EditNote(Note note)
+        {
+            navigationService.NavigateTo(ViewNames.CreatePage, note.Id);
         }
     }
 }

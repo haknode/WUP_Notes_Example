@@ -3,6 +3,7 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using NotesPCL.Models;
 using NotesPCL.ViewModels;
 
 namespace Notes.Views
@@ -33,9 +34,17 @@ namespace Notes.Views
         {
             //when the user navigates to this page
             //register the OnBackRequested method to the event
-            ((App) Application.Current).OnBackRequested += OnBackRequested;
+            ((App)Application.Current).OnBackRequested += OnBackRequested;
 
-            dispatcherTimer.Start();    //start the dispatcherTimer
+            if (e.Parameter is Guid)
+            {
+                ViewModel.LoadNote((Guid)e.Parameter);
+            }
+            else
+            {
+
+                dispatcherTimer.Start();    //start the dispatcherTimer
+            }
 
             base.OnNavigatedTo(e);
         }

@@ -86,7 +86,7 @@ namespace NotesPCL.ViewModels
             dataService.RemoveAllNotes();
             foreach (var note in loadedNotes)
             {
-                dataService.AddNote(note);
+                dataService.AddOrUpdateNote(note);
             }
         }
 

@@ -1,14 +1,14 @@
 ﻿<Application x:Class="Notes.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:converter="using:Notes.Converters"
+             xmlns:converters="using:Notes.Converters"
              xmlns:viewModel="using:Notes.ViewModels"
              RequestedTheme="Light">
 
     <Application.Resources>
         <viewModel:WupViewModelLocator x:Key="ViewModelLocator" />
-        <converter:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
-        <converter:BoolToNullableBoolConverter x:Key="BoolToNullableBoolConverter" />
+        <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
         <!-- Style used to strech the items in a listview -->
         <Style x:Key="StretchedItemStyle"

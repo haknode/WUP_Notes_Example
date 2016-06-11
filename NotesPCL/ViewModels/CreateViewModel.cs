@@ -15,6 +15,9 @@ namespace NotesPCL.ViewModels
         private readonly IDialogService dialogService;
         private readonly INavigationService navigationService;
 
+        //If this variable references a note, we are in edit mode
+        private Note editNote;
+
         //Dependencies are injected by SimpleIOC
         public CreateViewModel(IDataService dataService, INavigationService navigationService, IDialogService dialogService)
         {
@@ -29,14 +32,21 @@ namespace NotesPCL.ViewModels
 
         public string Content { get; set; }
 
-        public Boolean CanSave => !string.IsNullOrWhiteSpace(Content);
+        public Boolean CanSave => !string.IsNullOrWhiteSpace(Content) && (editNote !=null && Content != editNote.Content);
+        public Boolean CanDelete => editNote != null;
 
         public void SaveNote()
         {
             //if the note is not empty, save it and navigate back
             if (CanSave)
             {
-                dataService.AddNote(new Note(Content, CreationDateTime));
+                if(editNote == null)
+                    editNote = new Note();
+
+                editNote.Content = Content;
+                editNote.Created = DateTime.Now;
+
+                dataService.AddOrUpdateNote(editNote);
 
                 ClearAndGoBack();
             }
@@ -45,7 +55,7 @@ namespace NotesPCL.ViewModels
         public async void Cancel()
         {
             //if the note is empty, go back without the showing the confirm dialog
-            if (string.IsNullOrWhiteSpace(Content))
+            if (!CanSave)
             {
                 ClearAndGoBack();
             }
@@ -60,11 +70,34 @@ namespace NotesPCL.ViewModels
                 }
             }
         }
+        public void LoadNote(Guid id)
+        {
+            editNote = dataService.GetNote(id);
+
+            Content = editNote.Content;
+            CreationDateTime = editNote.Created;
+        }
+
+        public async void DeleteNote()
+        {
+            var confirmed = await dialogService.ShowMessage("Do you really want to delete this Note?", "Delete Note?",
+                    "Delete", "Cancel", isOkPressed => { /* Do Nothing */ });
+
+            if (confirmed)
+            {
+                if (editNote != null)
+                {
+                    dataService.RemoveNote(editNote.Id);
+                    ClearAndGoBack();
+                }
+            }
+        }
 
         private void ClearAndGoBack()
         {
             Content = string.Empty;
             CreationDateTime = DateTime.Now;
+            editNote = null;
 
             navigationService.GoBack();
         }

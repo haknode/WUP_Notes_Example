@@ -1,4 +1,6 @@
 ﻿using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
+using NotesPCL.Models;
 using NotesPCL.ViewModels;
 
 namespace Notes.Views
@@ -10,6 +12,23 @@ namespace Notes.Views
             InitializeComponent();
         }
 
-        public SearchViewModel ViewModel => (SearchViewModel) DataContext;
+        public SearchViewModel ViewModel => (SearchViewModel)DataContext;
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.NavigationMode != NavigationMode.Back)
+            {
+                ViewModel.ClearSearch();
+            }
+
+            base.OnNavigatedTo(e);
+        }
+
+        private void NotesListView_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            var note = (Note)e.ClickedItem;
+
+            ViewModel.EditNote(note);
+        }
     }
 }

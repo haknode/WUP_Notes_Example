@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NotesPCL.Models;
 
 namespace NotesPCL.Services
@@ -7,9 +8,9 @@ namespace NotesPCL.Services
     public interface IDataService
     {
         IEnumerable<Note> GetNotes();
-        Note GetNote();
-        void AddNote(Note note);
-        void RemoveNote(Note note);
+        Note GetNote(Guid id);
+        void AddOrUpdateNote(Note note);
+        void RemoveNote(Guid id);
         void RemoveAllNotes();
         Settings GetSettings();
         void SetSettings(Settings newSettings);

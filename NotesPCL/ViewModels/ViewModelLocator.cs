@@ -31,8 +31,8 @@ namespace NotesPCL.ViewModels
         //TODO: donte return a new instance every time
         public StartViewModel StartViewModel => ServiceLocator.Current.GetInstance<StartViewModel>();
         public CreateViewModel CreateViewModel => ServiceLocator.Current.GetInstance<CreateViewModel>();
-        public ListViewModel ListViewModel => ServiceLocator.Current.GetInstance<ListViewModel>(Guid.NewGuid().ToString());
-        public SearchViewModel SearchViewModel => ServiceLocator.Current.GetInstance<SearchViewModel>(Guid.NewGuid().ToString());
-        public SettingsViewModel SettingsViewModel => ServiceLocator.Current.GetInstance<SettingsViewModel>(Guid.NewGuid().ToString());
+        public ListViewModel ListViewModel => ServiceLocator.Current.GetInstance<ListViewModel>();
+        public SearchViewModel SearchViewModel => ServiceLocator.Current.GetInstance<SearchViewModel>();
+        public SettingsViewModel SettingsViewModel => ServiceLocator.Current.GetInstance<SettingsViewModel>();
     }
 }
