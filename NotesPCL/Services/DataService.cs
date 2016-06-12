@@ -8,11 +8,14 @@ namespace NotesPCL.Services
     //This class provides default test data for our app
     public class DataService : IDataService
     {
+        private readonly IStorageService storageService;
         private readonly Dictionary<Guid, Note> notes;
         private Settings setting;
 
-        public DataService()
+        public DataService(IStorageService storageService)
         {
+            this.storageService = storageService;
+
             notes = new Dictionary<Guid, Note>();
             setting = Settings.DefaultSettings;
 
@@ -52,6 +55,26 @@ namespace NotesPCL.Services
         public void SetSettings(Settings newSettings)
         {
             setting = newSettings;
+        }
+
+        public void LoadFromStorage()
+        {
+            var loadedSettings = storageService.Read<Settings>("Settings", Settings.DefaultSettings);
+            SetSettings(loadedSettings);
+
+            var loadedNotes = storageService.Read<IEnumerable<Note>>("Notes", new List<Note>());
+
+            RemoveAllNotes();
+            foreach (var note in loadedNotes)
+            {
+                AddOrUpdateNote(note);
+            }
+        }
+
+        public void SaveToStorage()
+        {
+            storageService.Write("Settings", GetSettings());
+            storageService.Write("Notes", GetNotes());
         }
 
         private void InsertTestData(int num)

@@ -57,12 +57,12 @@
                     HorizontalAlignment="Stretch"
                     Margin="10"
                     Content="Load Notes" 
-                    Click="{x:Bind ViewModel.LoadNotesFromInternalStorage}"/>
+                    Click="{x:Bind ViewModel.LoadNotesFromStorage}"/>
             <Button Grid.Column="1"
                     HorizontalAlignment="Stretch"
                     Margin="10"
                     Content="Save Notes"
-                    Click="{x:Bind ViewModel.SaveNotesToInternalStorage}"/>
+                    Click="{x:Bind ViewModel.SaveNotesToStorage}"/>
         </Grid>
     </StackPanel>
 </Page>

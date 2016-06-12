@@ -51,7 +51,6 @@ namespace NotesPCL.ViewModels
             return SortingOrder >= 0 && SortingOrder <= 1;
         }
 
-        //TODO: save and load in navigatedto
         public void Load()
         {
             Settings settings = dataService.GetSettings();
@@ -74,28 +73,14 @@ namespace NotesPCL.ViewModels
             }
         }
 
-        public void LoadNotesFromInternalStorage()
+        public void LoadNotesFromStorage()
         {
-            var storageService = ServiceLocator.Current.GetInstance<IStorageService>();
-
-            var loadedSettings = storageService.Read<Settings>("Settings", Settings.DefaultSettings);
-            dataService.SetSettings(loadedSettings);
-
-
-            var loadedNotes = storageService.Read<IEnumerable<Note>>("Notes", new List<Note>());
-            dataService.RemoveAllNotes();
-            foreach (var note in loadedNotes)
-            {
-                dataService.AddOrUpdateNote(note);
-            }
+            dataService.LoadFromStorage();
         }
 
-        public void SaveNotesToInternalStorage()
+        public void SaveNotesToStorage()
         {
-            var storageService = ServiceLocator.Current.GetInstance<IStorageService>();
-
-            storageService.Write("Settings", dataService.GetSettings());
-            storageService.Write("Notes", dataService.GetNotes());
+            dataService.SaveToStorage();
         }
     }
 }

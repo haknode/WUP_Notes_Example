@@ -32,7 +32,7 @@ namespace NotesPCL.ViewModels
 
         public string Content { get; set; }
 
-        public Boolean CanSave => !string.IsNullOrWhiteSpace(Content) && (editNote !=null && Content != editNote.Content);
+        public Boolean CanSave => !(string.IsNullOrWhiteSpace(Content) || (editNote != null && Content == editNote.Content));
         public Boolean CanDelete => editNote != null;
 
         public void SaveNote()
@@ -40,7 +40,7 @@ namespace NotesPCL.ViewModels
             //if the note is not empty, save it and navigate back
             if (CanSave)
             {
-                if(editNote == null)
+                if (editNote == null)
                     editNote = new Note();
 
                 editNote.Content = Content;
@@ -80,12 +80,12 @@ namespace NotesPCL.ViewModels
 
         public async void DeleteNote()
         {
-            var confirmed = await dialogService.ShowMessage("Do you really want to delete this Note?", "Delete Note?",
+            if (editNote != null)
+            {
+                var confirmed = await dialogService.ShowMessage("Do you really want to delete this Note?", "Delete Note?",
                     "Delete", "Cancel", isOkPressed => { /* Do Nothing */ });
 
-            if (confirmed)
-            {
-                if (editNote != null)
+                if (confirmed)
                 {
                     dataService.RemoveNote(editNote.Id);
                     ClearAndGoBack();

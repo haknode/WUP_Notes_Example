@@ -14,5 +14,8 @@ namespace NotesPCL.Services
         void RemoveAllNotes();
         Settings GetSettings();
         void SetSettings(Settings newSettings);
+
+        void SaveToStorage();
+        void LoadFromStorage();
     }
 }
