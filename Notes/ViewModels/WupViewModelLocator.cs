@@ -3,7 +3,6 @@ using Notes.Views;
 using NotesPCL.Views;
 using NotesPCL.ViewModels;
 using NotesPCL.Services;
-using System;
 using GalaSoft.MvvmLight.Ioc;
 using Notes.Services;
 
@@ -24,7 +23,7 @@ namespace Notes.ViewModels
             SimpleIoc.Default.Register<IDialogService, DialogService>();
 
             //This StorageService should be injected for every IStorageService
-            SimpleIoc.Default.Register<IStorageService, WupStorageService>();
+            SimpleIoc.Default.Register<IStorageService, WupLocalSettingsStorageService>();
         }
         public INavigationService GenerateNavigationService()
         {
