@@ -11,6 +11,6 @@ namespace NotesPCL.Models
 
         public Guid Id { get; private set; }
         public string Content { get; set; }
-        public DateTime Created { get; set; }
+        public DateTime LastModified { get; set; }
     }
 }

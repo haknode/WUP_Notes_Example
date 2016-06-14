@@ -84,7 +84,7 @@ namespace NotesPCL.Services
                 AddOrUpdateNote(new Note
                                 {
                                     Content = "This is Note " + i,
-                                    Created = DateTime.Now.AddMonths(-1 * i),
+                                    LastModified = DateTime.Now.AddMonths(-1 * i),
                                 });
             }
         }

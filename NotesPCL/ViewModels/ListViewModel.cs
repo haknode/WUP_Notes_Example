@@ -35,9 +35,9 @@ namespace NotesPCL.ViewModels
             Notes = dataService.GetNotes();
 
             if (sortAscending)
-                Notes = Notes.OrderBy(n => n.Created);
+                Notes = Notes.OrderBy(n => n.LastModified);
             else
-                Notes = Notes.OrderByDescending(n => n.Created);
+                Notes = Notes.OrderByDescending(n => n.LastModified);
 
             Notes = Notes.Take(numberOfDisplayedNotes);
         }

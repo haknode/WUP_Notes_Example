@@ -27,7 +27,7 @@
                 <TextBlock Grid.Column="0"
                            Text="{Binding Content}" />
                 <TextBlock Grid.Column="1"
-                           Text="{Binding Created, Converter={StaticResource DateTimeToStringConverter}}"
+                           Text="{Binding LastModified, Converter={StaticResource DateTimeToStringConverter}}"
                            TextAlignment="Right" />
             </Grid>
         </DataTemplate>

@@ -45,11 +45,11 @@ namespace NotesPCL.ViewModels
                         return false;
 
                     if (FromDate.HasValue 
-                        && note.Created.Date.CompareTo(FromDate.Value.Date) < 0)
+                        && note.LastModified.Date.CompareTo(FromDate.Value.Date) < 0)
                         return false;
 
                     if (ToDate.HasValue 
-                        && note.Created.Date.CompareTo(ToDate.Value.Date) > 0)
+                        && note.LastModified.Date.CompareTo(ToDate.Value.Date) > 0)
                         return false;
 
                     return true;    //return all elements by default

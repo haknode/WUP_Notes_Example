@@ -44,7 +44,7 @@ namespace NotesPCL.ViewModels
                     editNote = new Note();
 
                 editNote.Content = Content;
-                editNote.Created = DateTime.Now;
+                editNote.LastModified = DateTime.Now;
 
                 dataService.AddOrUpdateNote(editNote);
 
@@ -75,7 +75,7 @@ namespace NotesPCL.ViewModels
             editNote = dataService.GetNote(id);
 
             Content = editNote.Content;
-            CreationDateTime = editNote.Created;
+            CreationDateTime = editNote.LastModified;
         }
 
         public async void DeleteNote()
