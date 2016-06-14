@@ -19,7 +19,7 @@ namespace NotesPCL.Services
             notes = new Dictionary<Guid, Note>();
             setting = Settings.DefaultSettings;
 
-            InsertTestData(4);
+            //InsertTestData(4);
         }
 
         public IEnumerable<Note> GetNotes()
