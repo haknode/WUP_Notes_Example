@@ -100,8 +100,8 @@
     <Compile Include="Services\WupLocalFolderStorageService.cs" />
     <Compile Include="Services\WupLocalSettingsStorageService.cs" />
     <Compile Include="ViewModels\WupViewModelLocator.cs" />
-    <Compile Include="Views\CreatePage.xaml.cs">
-      <DependentUpon>CreatePage.xaml</DependentUpon>
+    <Compile Include="Views\EditPage.xaml.cs">
+      <DependentUpon>EditPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ListPage.xaml.cs">
       <DependentUpon>ListPage.xaml</DependentUpon>
@@ -139,7 +139,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Views\CreatePage.xaml">
+    <Page Include="Views\EditPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

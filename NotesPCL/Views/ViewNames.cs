@@ -7,7 +7,7 @@
 
     public class ViewNames
     {
-        public static readonly string CreatePage = "CreatePage";
+        public static readonly string EditPage = "EditPage";
         public static readonly string ListPage = "ListPage";
         public static readonly string SearchPage = "SearchPage";
         public static readonly string SettingsPage = "SettingsPage";

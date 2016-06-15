@@ -18,7 +18,7 @@ namespace NotesPCL.ViewModels
 
             //Register the ViewModels
             SimpleIoc.Default.Register<StartViewModel>();
-            SimpleIoc.Default.Register<CreateViewModel>();
+            SimpleIoc.Default.Register<EditViewModel>();
             SimpleIoc.Default.Register<ListViewModel>();
             SimpleIoc.Default.Register<SearchViewModel>();
             SimpleIoc.Default.Register<SettingsViewModel>();
@@ -29,7 +29,7 @@ namespace NotesPCL.ViewModels
          * The others always return the same insatance.
          */
         public StartViewModel StartViewModel => ServiceLocator.Current.GetInstance<StartViewModel>();
-        public CreateViewModel CreateViewModel => ServiceLocator.Current.GetInstance<CreateViewModel>();
+        public EditViewModel EditViewModel => ServiceLocator.Current.GetInstance<EditViewModel>();
         public ListViewModel ListViewModel => ServiceLocator.Current.GetInstance<ListViewModel>();
         public SearchViewModel SearchViewModel => ServiceLocator.Current.GetInstance<SearchViewModel>();
         public SettingsViewModel SettingsViewModel => ServiceLocator.Current.GetInstance<SettingsViewModel>();

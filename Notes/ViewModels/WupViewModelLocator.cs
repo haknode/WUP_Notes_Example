@@ -28,7 +28,7 @@ namespace Notes.ViewModels
         public INavigationService GenerateNavigationService()
         {
             var navigationService = new NavigationService();
-            navigationService.Configure(ViewNames.CreatePage, typeof(CreatePage));
+            navigationService.Configure(ViewNames.EditPage, typeof(EditPage));
             navigationService.Configure(ViewNames.ListPage, typeof(ListPage));
             navigationService.Configure(ViewNames.SearchPage, typeof(SearchPage));
             navigationService.Configure(ViewNames.SettingsPage, typeof(SettingsPage));

@@ -9,7 +9,7 @@ namespace NotesPCL.ViewModels
     /* 
      * INPC is injected by Fody
      */
-    public class CreateViewModel : ViewModelBase
+    public class EditViewModel : ViewModelBase
     {
         private readonly IDataService dataService;
         private readonly IDialogService dialogService;
@@ -19,7 +19,7 @@ namespace NotesPCL.ViewModels
         private Note editNote;
 
         //Dependencies are injected by SimpleIOC
-        public CreateViewModel(IDataService dataService, INavigationService navigationService, IDialogService dialogService)
+        public EditViewModel(IDataService dataService, INavigationService navigationService, IDialogService dialogService)
         {
             this.dataService = dataService;
             this.dialogService = dialogService;

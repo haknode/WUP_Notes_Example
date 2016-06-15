@@ -57,7 +57,7 @@ namespace NotesPCL.ViewModels
 
         public void EditNote(Note note)
         {
-            navigationService.NavigateTo(ViewNames.CreatePage, note.Id);
+            navigationService.NavigateTo(ViewNames.EditPage, note.Id);
         }
     }
 }

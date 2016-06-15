@@ -8,11 +8,11 @@ using NotesPCL.ViewModels;
 
 namespace Notes.Views
 {
-    public sealed partial class CreatePage : Page
+    public sealed partial class EditPage : Page
     {
         private readonly DispatcherTimer dispatcherTimer;
 
-        public CreatePage()
+        public EditPage()
         {
             InitializeComponent();
 
@@ -21,7 +21,7 @@ namespace Notes.Views
             dispatcherTimer.Tick += (sender, o) => { ViewModel.CreationDateTime = DateTime.Now; };   //Update the time in the ViewModel every 1 second
         }
 
-        public CreateViewModel ViewModel => (CreateViewModel) DataContext;
+        public EditViewModel ViewModel => (EditViewModel) DataContext;
 
         //This method is executed on every BackRequested event
         private void OnBackRequested(object sender, BackRequestedEventArgs e)
