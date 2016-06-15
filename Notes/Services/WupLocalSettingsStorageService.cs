@@ -4,7 +4,7 @@ using NotesPCL.Services;
 
 namespace Notes.Services
 {
-    public class WupLocalSettingsStorageService : IStorageService
+    class WupLocalSettingsStorageService : IStorageService
     {
         private readonly ApplicationDataContainer localSettingsContainer;
 

@@ -18,7 +18,7 @@ namespace Notes.Views
 
             dispatcherTimer = new DispatcherTimer();    //DispatcherTimer to periodically update the current time
             dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
-            dispatcherTimer.Tick += (sender, o) => { ViewModel.CreationDateTime = DateTime.Now; };   //Update the time in the ViewModel every 1 second
+            dispatcherTimer.Tick += (sender, o) => { ViewModel.EditNote.LastModified = DateTime.Now; };   //Update the time in the ViewModel every 1 second
         }
 
         public EditViewModel ViewModel => (EditViewModel) DataContext;
@@ -42,7 +42,7 @@ namespace Notes.Views
             }
             else
             {
-
+                ViewModel.LoadEmptyNote();
                 dispatcherTimer.Start();    //start the dispatcherTimer
             }
 

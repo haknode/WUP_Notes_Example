@@ -97,8 +97,10 @@
     </Compile>
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\DateTimeToStringConverter.cs" />
+    <Compile Include="Converters\GeoLocationToGeopointConverter.cs" />
     <Compile Include="Services\WupLocalFolderStorageService.cs" />
     <Compile Include="Services\WupLocalSettingsStorageService.cs" />
+    <Compile Include="Services\WupLocationService.cs" />
     <Compile Include="ViewModels\WupViewModelLocator.cs" />
     <Compile Include="Views\EditPage.xaml.cs">
       <DependentUpon>EditPage.xaml</DependentUpon>

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Views;
 using NotesPCL.Models;
 using NotesPCL.Services;
+using PropertyChanged;
 
 namespace NotesPCL.ViewModels
 {
@@ -13,40 +15,40 @@ namespace NotesPCL.ViewModels
     {
         private readonly IDataService dataService;
         private readonly IDialogService dialogService;
+        private readonly ILocationService locationService;
         private readonly INavigationService navigationService;
 
-        //If this variable references a note, we are in edit mode
-        private Note editNote;
+        private Note originalNote;
+
+        private CancellationTokenSource cancellationTokenSource;
 
         //Dependencies are injected by SimpleIOC
-        public EditViewModel(IDataService dataService, INavigationService navigationService, IDialogService dialogService)
+        public EditViewModel(IDataService dataService, INavigationService navigationService, IDialogService dialogService, ILocationService locationService)
         {
             this.dataService = dataService;
             this.dialogService = dialogService;
+            this.locationService = locationService;
             this.navigationService = navigationService;
 
-            ClearAndGoBack();
+            Clear();
         }
 
-        public DateTime CreationDateTime { get; set; }
 
-        public string Content { get; set; }
+        public Note EditNote { get; private set; }
 
-        public Boolean CanSave => !(string.IsNullOrWhiteSpace(Content) || (editNote != null && Content == editNote.Content));
-        public Boolean CanDelete => editNote != null;
+        public double ZoomLevel { get; set; } = 13;
+
+        public Boolean CanDelete => originalNote != null;
 
         public void SaveNote()
         {
             //if the note is not empty, save it and navigate back
-            if (CanSave)
+            if (EditNote.IsNotEmpty)
             {
-                if (editNote == null)
-                    editNote = new Note();
 
-                editNote.Content = Content;
-                editNote.LastModified = DateTime.Now;
+                EditNote.LastModified = DateTime.Now;
 
-                dataService.AddOrUpdateNote(editNote);
+                dataService.AddOrUpdateNote(EditNote);
 
                 ClearAndGoBack();
             }
@@ -55,12 +57,9 @@ namespace NotesPCL.ViewModels
         public async void Cancel()
         {
             //if the note is empty, go back without the showing the confirm dialog
-            if (!CanSave)
+            if (EditNote.IsNotEmpty)
             {
-                ClearAndGoBack();
-            }
-            else
-            {   //show a dialog to confirm 
+                //show a dialog to confirm 
                 var confirmed = await dialogService.ShowMessage("Your note was not saved! Go back without saving?", "Continue without Saving?",
                     "Continue", "Cancel", isOkPressed => { /* Do Nothing */ });
 
@@ -68,26 +67,38 @@ namespace NotesPCL.ViewModels
                 {
                     ClearAndGoBack();
                 }
+
+            }
+            else
+            {
+                ClearAndGoBack();
             }
         }
         public void LoadNote(Guid id)
         {
-            editNote = dataService.GetNote(id);
+            //get the note but use a copy to edit
+            originalNote = dataService.GetNote(id);
+            EditNote = originalNote.Clone();
+        }
 
-            Content = editNote.Content;
-            CreationDateTime = editNote.LastModified;
+        public void LoadEmptyNote()
+        {
+            Clear();
+
+            //Try to get the position
+            TryGetPosition();
         }
 
         public async void DeleteNote()
         {
-            if (editNote != null)
+            if (EditNote != null)
             {
                 var confirmed = await dialogService.ShowMessage("Do you really want to delete this Note?", "Delete Note?",
                     "Delete", "Cancel", isOkPressed => { /* Do Nothing */ });
 
                 if (confirmed)
                 {
-                    dataService.RemoveNote(editNote.Id);
+                    dataService.RemoveNote(EditNote.Id);
                     ClearAndGoBack();
                 }
             }
@@ -95,11 +106,26 @@ namespace NotesPCL.ViewModels
 
         private void ClearAndGoBack()
         {
-            Content = string.Empty;
-            CreationDateTime = DateTime.Now;
-            editNote = null;
+            Clear();
 
             navigationService.GoBack();
+        }
+
+        private void Clear()
+        {
+            EditNote = new Note();
+            originalNote = null;
+
+            cancellationTokenSource?.Cancel(); //Cancel GetCurrentLocation operation if any
+        }
+
+        private async void TryGetPosition()
+        {
+            cancellationTokenSource?.Cancel();  //Cancel GetCurrentLocation if any
+            cancellationTokenSource = new CancellationTokenSource();    //Creat new cancellatoinToken
+
+            //Get Location
+            EditNote.CreationLocation = await locationService.GetCurrentLocation(cancellationTokenSource.Token);
         }
     }
 }

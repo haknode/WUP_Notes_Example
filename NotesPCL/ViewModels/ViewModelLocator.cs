@@ -8,7 +8,7 @@ namespace NotesPCL.ViewModels
 {
     public abstract class ViewModelLocator
     {
-        protected ViewModelLocator()
+        static ViewModelLocator()
         {
             //Setup IOC Container
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);

@@ -6,7 +6,7 @@ using NotesPCL.Services;
 
 namespace Notes.Services
 {
-    public class WupLocalFolderStorageService : IStorageService
+    class WupLocalFolderStorageService : IStorageService
     {
         private readonly StorageFolder storageFolder;
         private readonly JsonSerializer jsonSerializer;

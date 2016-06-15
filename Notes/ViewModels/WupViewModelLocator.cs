@@ -10,7 +10,7 @@ namespace Notes.ViewModels
 {
     public class WupViewModelLocator : ViewModelLocator
     {
-        public WupViewModelLocator() : base()
+        static WupViewModelLocator() 
         {
             //This NavigationService should be injected for every INavigationService
             SimpleIoc.Default.Register<INavigationService>(GenerateNavigationService);
@@ -24,8 +24,12 @@ namespace Notes.ViewModels
 
             //This StorageService should be injected for every IStorageService
             SimpleIoc.Default.Register<IStorageService, WupLocalSettingsStorageService>();
+
+            //This LocationService should be injected for every ILocationService
+            SimpleIoc.Default.Register<ILocationService, WupLocationService>();
         }
-        public INavigationService GenerateNavigationService()
+
+        private static INavigationService GenerateNavigationService()
         {
             var navigationService = new NavigationService();
             navigationService.Configure(ViewNames.EditPage, typeof(EditPage));
