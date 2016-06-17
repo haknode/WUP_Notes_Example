@@ -1,9 +1,17 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Windows.Devices.Geolocation;
+using Windows.Foundation;
+using Windows.Storage.Streams;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Maps;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.Practices.ServiceLocation;
+using Notes.Converters;
 using NotesPCL.Models;
+using NotesPCL.Services;
 using NotesPCL.ViewModels;
 
 namespace Notes.Views
@@ -12,6 +20,9 @@ namespace Notes.Views
     {
         private readonly DispatcherTimer dispatcherTimer;
 
+        private readonly MapIcon currentLocationMapIcon;
+        private readonly Geolocator geolocator;
+
         public EditPage()
         {
             InitializeComponent();
@@ -19,9 +30,19 @@ namespace Notes.Views
             dispatcherTimer = new DispatcherTimer();    //DispatcherTimer to periodically update the current time
             dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
             dispatcherTimer.Tick += (sender, o) => { ViewModel.EditNote.LastModified = DateTime.Now; };   //Update the time in the ViewModel every 1 second
+
+            currentLocationMapIcon = new MapIcon
+            {
+                Title = "You are here",
+                NormalizedAnchorPoint = new Point(0.5, 0.5),
+            };
+            MapControl.MapElements.Add(currentLocationMapIcon);
+
+
+            geolocator = new Geolocator();
         }
 
-        public EditViewModel ViewModel => (EditViewModel) DataContext;
+        public EditViewModel ViewModel => (EditViewModel)DataContext;
 
         //This method is executed on every BackRequested event
         private void OnBackRequested(object sender, BackRequestedEventArgs e)
@@ -38,7 +59,7 @@ namespace Notes.Views
 
             if (e.Parameter is Guid)
             {
-                ViewModel.LoadNote((Guid)e.Parameter);
+                ViewModel.LoadExistingNote((Guid)e.Parameter);
             }
             else
             {
@@ -52,11 +73,39 @@ namespace Notes.Views
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             //when the user navigates away from this page
-            ((App) Application.Current).OnBackRequested -= OnBackRequested;
+            ((App)Application.Current).OnBackRequested -= OnBackRequested;
 
             dispatcherTimer.Stop();  //stop the dispatcherTimer
 
             base.OnNavigatedFrom(e);
+        }
+
+        private async void CenterToCurrentLocation()
+        {
+            var access = await Geolocator.RequestAccessAsync();
+
+            if (access == GeolocationAccessStatus.Allowed)
+            {
+                var geoposition = await geolocator.GetGeopositionAsync();
+                var geopoint = geoposition.Coordinate.Point;
+
+                currentLocationMapIcon.Location = geopoint;
+
+                MapControl.Center = geopoint;
+                MapControl.ZoomLevel = 15;
+            }
+        }
+
+        private void ZoomIn()
+        {
+            if (MapControl.ZoomLevel < MapControl.MaxZoomLevel)
+                MapControl.ZoomLevel++;
+        }
+
+        private void ZoomOut()
+        {
+            if (MapControl.ZoomLevel > MapControl.MinZoomLevel)
+                MapControl.ZoomLevel--;
         }
     }
 }

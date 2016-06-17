@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\DateTimeToStringConverter.cs" />
+    <Compile Include="Converters\GeoLocationToVisibilityConverter.cs" />
     <Compile Include="Converters\GeoLocationToGeopointConverter.cs" />
     <Compile Include="Services\WupLocalFolderStorageService.cs" />
     <Compile Include="Services\WupLocalSettingsStorageService.cs" />
@@ -126,6 +127,8 @@
     <None Include="Notes_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\map-pin-red-hi.png" />
+    <Content Include="Assets\Maps_current_location.png" />
     <Content Include="Assets\note-4.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />

@@ -10,25 +10,17 @@ using NotesPCL.Models;
 
 namespace Notes.Converters
 {
-    class GeoLocationToGeopointConverter : IValueConverter
+    class GeoLocationToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var geoLocation = value as GeoLocation;
-            if (geoLocation != null && targetType == typeof(Geopoint))
+            if (geoLocation != null && targetType == typeof(Visibility))
             {
                 if (geoLocation.IsValid)
-                    return new Geopoint(new BasicGeoposition
-                                        {
-                                            Latitude = geoLocation.Latitude,
-                                            Longitude = geoLocation.Longitude,
-                                        }, AltitudeReferenceSystem.Terrain);
+                    return Visibility.Visible;
 
-                return new Geopoint(new BasicGeoposition
-                                    {
-                                        Latitude = 0,
-                                        Longitude = 0,
-                                    });
+                return Visibility.Collapsed;
             }
 
             return DependencyProperty.UnsetValue;

@@ -3,47 +3,13 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
+      xmlns:models="using:NotesPCL.Models"
       x:Class="Notes.Views.EditPage"
       mc:Ignorable="d"
       Background="White"
       DataContext="{Binding EditViewModel, Source={StaticResource ViewModelLocator}}">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0"
-                   Text="New Note"
-                   HorizontalAlignment="Stretch"
-                   TextAlignment="Center"
-                   Padding="10"
-                   FontWeight="Bold"
-                   FontSize="20" />
-
-        <TextBlock Grid.Row="1"
-                   Text="{x:Bind ViewModel.EditNote.LastModified, Converter={StaticResource DateTimeToStringConverter}, Mode=OneWay}"
-                   HorizontalAlignment="Right"
-                   TextAlignment="Center"
-                   Padding="10"
-                   FontSize="15" />
-        <TextBox Grid.Row="2"
-                 AcceptsReturn="True"
-                 TextWrapping="Wrap"
-                 VerticalAlignment="Stretch"
-                 HorizontalAlignment="Stretch"
-                 InputScope="Text"
-                 Text="{Binding EditNote.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        
-        <!-- Use classic binding to allow null values on the center property -->
-        <Maps:MapControl Grid.Row="3"
-                         ZoomLevel="{x:Bind ViewModel.ZoomLevel, Mode=OneWay}"
-                         Center="{Binding EditNote.CreationLocation, Mode=OneWay, Converter={StaticResource GeoLocationToGeopointConverter}}"/>
-    </Grid>
-    
-    <Page.BottomAppBar>
+    <Page.TopAppBar>
         <CommandBar>
             <AppBarButton Icon="Delete"
                           Label="Delete"
@@ -52,11 +18,127 @@
                           Click="{x:Bind ViewModel.DeleteNote}" />
             <AppBarButton Icon="Save"
                           Label="Save"
-                          IsEnabled="{x:Bind ViewModel.EditNote.IsNotEmpty, Mode=OneWay}"
+                          IsEnabled="{x:Bind ViewModel.CanSave, Mode=OneWay}"
                           Click="{x:Bind ViewModel.SaveNote}" />
             <AppBarButton Icon="Cancel"
                           Label="Cancel"
                           Click="{x:Bind ViewModel.Cancel}" />
         </CommandBar>
-    </Page.BottomAppBar>
+    </Page.TopAppBar>
+
+    <RelativePanel>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="800" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="InputGrid.(RelativePanel.AlignBottomWithPanel)"
+                                Value="True" />
+                        <Setter Target="InputGrid.(RelativePanel.AlignRightWithPanel)"
+                                Value="False" />
+                        <Setter Target="MapContainer.(RelativePanel.AlignTopWithPanel)"
+                                Value="True" />
+                        <Setter Target="MapContainer.(RelativePanel.AlignLeftWithPanel)"
+                                Value="False" />
+                        <Setter Target="MapContainer.(RelativePanel.RightOf)"
+                                Value="InputGrid" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid x:Name="InputGrid"
+              RelativePanel.AlignTopWithPanel="True"
+              RelativePanel.AlignBottomWithPanel="False"
+              RelativePanel.AlignRightWithPanel="True"
+              RelativePanel.AlignLeftWithPanel="True"
+              MinWidth="300">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                       Text="New Note"
+                       HorizontalAlignment="Stretch"
+                       TextAlignment="Center"
+                       Padding="10"
+                       FontWeight="Bold"
+                       FontSize="20" />
+            <TextBlock Grid.Row="1"
+                       Text="{x:Bind ViewModel.EditNote.LastModified, Converter={StaticResource DateTimeToStringConverter}, Mode=OneWay}"
+                       HorizontalAlignment="Right"
+                       TextAlignment="Center"
+                       Padding="10"
+                       FontSize="15" />
+            <TextBox Grid.Row="2"
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     VerticalAlignment="Stretch"
+                     HorizontalAlignment="Stretch"
+                     InputScope="Text"
+                     MinHeight="100"
+                     Text="{Binding EditNote.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
+
+        <Grid x:Name="MapContainer"
+              RelativePanel.AlignTopWithPanel="False"
+              RelativePanel.AlignBottomWithPanel="True"
+              RelativePanel.AlignRightWithPanel="True"
+              RelativePanel.AlignLeftWithPanel="True"
+              RelativePanel.Below="InputGrid">
+            <!-- Use classic binding to allow null values on the center property -->
+            <Maps:MapControl x:Name="MapControl"
+                             ZoomLevel="{x:Bind ViewModel.ZoomLevel, Mode=OneWay}"
+                             Center="{Binding EditNote.CreationLocation, Mode=OneWay, Converter={StaticResource GeoLocationToGeopointConverter}}">
+                <Maps:MapItemsControl ItemsSource="{x:Bind ViewModel.AllNotes, Mode=OneWay}">
+                    <Maps:MapItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="models:Note">
+                            <Grid Maps:MapControl.Location="{Binding CreationLocation, Converter={StaticResource GeoLocationToGeopointConverter}}"
+                                  Maps:MapControl.NormalizedAnchorPoint="0.5 1"
+                                  Visibility="{Binding CreationLocation, Converter={StaticResource GeoLocationToVisibilityConverter}}"
+                                  Width="30"
+                                  Height="30">
+                                <Image Source="../Assets/map-pin-red-hi.png" />
+                                <TextBlock Text="{x:Bind LastModified}" />
+                            </Grid>
+                        </DataTemplate>
+                    </Maps:MapItemsControl.ItemTemplate>
+                </Maps:MapItemsControl>
+            </Maps:MapControl>
+            
+            <StackPanel HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Margin="20">
+                <Button Content="+"
+                        Width="30"
+                        Height="30"
+                        Padding="2"
+                        Click="{x:Bind ZoomIn}" />
+                <Button Content="-"
+                        Width="30"
+                        Height="30"
+                        Padding="2"
+                        Click="{x:Bind ZoomOut}" />
+                <Button Width="30"
+                        Height="30"
+                        Padding="2"
+                        Click="{x:Bind CenterToCurrentLocation}">
+                    <Image Source="../Assets/Maps_current_location.png" />
+                </Button>
+            </StackPanel>
+            
+        </Grid>
+        
+    </RelativePanel>
+
 </Page>

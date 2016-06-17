@@ -14,17 +14,17 @@ namespace Notes.Services
     {
         private readonly Geolocator geolocator = new Geolocator();
 
-        public Task<GeoLocation> GetCurrentLocation()
+        public Task<GeoLocation> GetCurrentLocationAsync()
         {
-            return GetCurrentLocation(CancellationToken.None);
+            return GetCurrentLocationAsync(CancellationToken.None);
         }
 
-        public Task<GeoLocation> GetCurrentLocation(CancellationToken cancellationToken)
+        public Task<GeoLocation> GetCurrentLocationAsync(CancellationToken cancellationToken)
         {
-            return GetCurrentLocation(cancellationToken, Int32.MaxValue);
+            return GetCurrentLocationAsync(cancellationToken, Int32.MaxValue);
         }
 
-        public async Task<GeoLocation> GetCurrentLocation(CancellationToken cancellationToken, int timeout)
+        public async Task<GeoLocation> GetCurrentLocationAsync(CancellationToken cancellationToken, int timeout)
         {
             try
             {

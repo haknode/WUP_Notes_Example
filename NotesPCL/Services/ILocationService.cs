@@ -10,8 +10,8 @@ namespace NotesPCL.Services
 {
     public interface ILocationService
     {
-        Task<GeoLocation> GetCurrentLocation();
-        Task<GeoLocation> GetCurrentLocation(CancellationToken cancellationToken);
-        Task<GeoLocation> GetCurrentLocation(CancellationToken cancellationToken, int timeout);
+        Task<GeoLocation> GetCurrentLocationAsync();
+        Task<GeoLocation> GetCurrentLocationAsync(CancellationToken cancellationToken);
+        Task<GeoLocation> GetCurrentLocationAsync(CancellationToken cancellationToken, int timeout);
     }
 }

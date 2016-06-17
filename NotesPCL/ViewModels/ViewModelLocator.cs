@@ -13,8 +13,8 @@ namespace NotesPCL.ViewModels
             //Setup IOC Container
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            //DataService should be injected for every IDataService
-            SimpleIoc.Default.Register<IDataService, DataService>();
+            //MockDataService should be injected for every IDataService
+            SimpleIoc.Default.Register<IDataService, MockDataService>();
 
             //Register the ViewModels
             SimpleIoc.Default.Register<StartViewModel>();

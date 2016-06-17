@@ -9,7 +9,8 @@
         <viewModel:WupViewModelLocator x:Key="ViewModelLocator" />
         <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-        <converters:GeoLocationToGeopointConverter x:Key="GeoLocationToGeopointConverter"/>
+        <converters:GeoLocationToGeopointConverter x:Key="GeoLocationToGeopointConverter" />
+        <converters:GeoLocationToVisibilityConverter x:Key="GeoLocationToVisibilityConverter" />
 
         <!-- Style used to strech the items in a listview -->
         <Style x:Key="StretchedItemStyle"

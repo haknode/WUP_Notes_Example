@@ -14,6 +14,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -44,9 +45,18 @@
             <ComboBox Grid.Row="2"
                       Grid.Column="1"
                       Width="150"
-                      HorizontalAlignment="Left"
+                      HorizontalAlignment="Right"
                       ItemsSource="{Binding SortingOrdersList, UpdateSourceTrigger=PropertyChanged}"
                       SelectedIndex="{x:Bind ViewModel.SortingOrder, Mode=TwoWay}" />
+            <TextBlock Grid.Row="3"
+                       Grid.Column="0"
+                       VerticalAlignment="Center"
+                       Text="DB Tenant ID" />
+            <TextBox Grid.Row="3"
+                     Grid.Column="1"
+                     Width="150"
+                     HorizontalAlignment="Right"
+                     Text="{Binding TenantId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
         <Grid Padding="0,100,0,0">
             <Grid.ColumnDefinitions>

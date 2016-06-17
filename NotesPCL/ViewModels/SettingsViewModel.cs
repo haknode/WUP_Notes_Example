@@ -32,6 +32,7 @@ namespace NotesPCL.ViewModels
         public String[] SortingOrdersList { get; }
 
         public int SortingOrder { get; set; }
+        public String TenantId { get; set; }
 
         private bool IsNumberOfNotesInListViewValid()
         {
@@ -57,6 +58,7 @@ namespace NotesPCL.ViewModels
 
             NumberOfNotesInListView = settings.NumberOfNotesInListView.ToString();
             SortingOrder = settings.SortAsscending ? 0 : 1;
+            TenantId = settings.DbTenantId;
         }
 
         public void Save()
@@ -66,7 +68,8 @@ namespace NotesPCL.ViewModels
                 var newSettings = new Settings
                 {
                     NumberOfNotesInListView = int.Parse(NumberOfNotesInListView),
-                    SortAsscending = SortingOrder == 0
+                    SortAsscending = SortingOrder == 0,
+                    DbTenantId = TenantId,
                 };
 
                 dataService.SetSettings(newSettings);

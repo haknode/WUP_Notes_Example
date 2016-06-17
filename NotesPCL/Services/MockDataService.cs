@@ -6,13 +6,13 @@ using NotesPCL.Models;
 namespace NotesPCL.Services
 {
     //This class provides default test data for our app
-    public class DataService : IDataService
+    public class MockDataService : IDataService
     {
         private readonly IStorageService storageService;
         private readonly Dictionary<Guid, Note> notes;
         private Settings setting;
 
-        public DataService(IStorageService storageService)
+        public MockDataService(IStorageService storageService)
         {
             this.storageService = storageService;
 

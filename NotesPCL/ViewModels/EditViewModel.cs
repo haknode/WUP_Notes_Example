@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Views;
@@ -33,19 +35,22 @@ namespace NotesPCL.ViewModels
             Clear();
         }
 
-
         public Note EditNote { get; private set; }
 
+        //ObservableCollection is needed here because the mapcontrol expects one
+        public ObservableCollection<Note> AllNotes => new ObservableCollection<Note>(dataService.GetNotes());
+
         public double ZoomLevel { get; set; } = 13;
+
+        public Boolean CanSave => !string.IsNullOrWhiteSpace(EditNote?.Content) && EditNote?.Content != originalNote?.Content;
 
         public Boolean CanDelete => originalNote != null;
 
         public void SaveNote()
         {
             //if the note is not empty, save it and navigate back
-            if (EditNote.IsNotEmpty)
+            if (CanSave)
             {
-
                 EditNote.LastModified = DateTime.Now;
 
                 dataService.AddOrUpdateNote(EditNote);
@@ -57,36 +62,48 @@ namespace NotesPCL.ViewModels
         public async void Cancel()
         {
             //if the note is empty, go back without the showing the confirm dialog
-            if (EditNote.IsNotEmpty)
+            if (CanSave)
             {
                 //show a dialog to confirm 
                 var confirmed = await dialogService.ShowMessage("Your note was not saved! Go back without saving?", "Continue without Saving?",
                     "Continue", "Cancel", isOkPressed => { /* Do Nothing */ });
 
-                if (confirmed)
+                if (!confirmed)
                 {
-                    ClearAndGoBack();
+                    return;
                 }
+            }
 
-            }
-            else
-            {
-                ClearAndGoBack();
-            }
+            ClearAndGoBack();
         }
-        public void LoadNote(Guid id)
+        public void LoadExistingNote(Guid id)
         {
+            Clear();
+
             //get the note but use a copy to edit
             originalNote = dataService.GetNote(id);
-            EditNote = originalNote.Clone();
+            var clonedNote = originalNote.Clone();
+            
+            LoadNote(clonedNote);
         }
-
+        private Random random = new Random();
         public void LoadEmptyNote()
         {
             Clear();
 
+            LoadNote(new Note());
             //Try to get the position
             TryGetPosition();
+        }
+
+        private void LoadNote(Note note)
+        {
+            EditNote = note;
+
+            EditNote.PropertyChanged += (sender, args) =>
+            {
+                RaisePropertyChanged(() => CanSave);
+            };
         }
 
         public async void DeleteNote()
@@ -113,7 +130,7 @@ namespace NotesPCL.ViewModels
 
         private void Clear()
         {
-            EditNote = new Note();
+            EditNote = null;
             originalNote = null;
 
             cancellationTokenSource?.Cancel(); //Cancel GetCurrentLocation operation if any
@@ -125,7 +142,7 @@ namespace NotesPCL.ViewModels
             cancellationTokenSource = new CancellationTokenSource();    //Creat new cancellatoinToken
 
             //Get Location
-            EditNote.CreationLocation = await locationService.GetCurrentLocation(cancellationTokenSource.Token);
+            EditNote.CreationLocation = await locationService.GetCurrentLocationAsync(cancellationTokenSource.Token);
         }
     }
 }
