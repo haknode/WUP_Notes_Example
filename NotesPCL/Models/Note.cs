@@ -9,12 +9,11 @@ namespace NotesPCL.Models
 
         public Note()
         {
-            Id = Guid.NewGuid();
             LastModified = DateTime.Now;
             CreationLocation = GeoLocation.InvalidGeoLocation;
         }
 
-        public Guid Id { get; private set; }
+        public int Id { get; set; }
         public string Content { get; set; }
         public DateTime LastModified { get; set; }
 

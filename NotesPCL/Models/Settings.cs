@@ -13,7 +13,7 @@ namespace NotesPCL.Models
         {
             NumberOfNotesInListView = 10,
             SortAsscending = false,
-            DbTenantId = String.Empty,
+            DbTenantId = "S1510237036",
         };
     }
 }

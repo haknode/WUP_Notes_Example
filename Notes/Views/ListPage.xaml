@@ -26,7 +26,7 @@
         <ListView Grid.Row="2"
                   ItemContainerStyle="{StaticResource StretchedItemStyle}"
                   ItemTemplate="{StaticResource NoteListItemTemplate}"
-                  ItemsSource="{x:Bind ViewModel.Notes}"
+                  ItemsSource="{x:Bind ViewModel.Notes, Mode=OneWay}"
                   IsItemClickEnabled="True"
                   ItemClick="NotesListView_OnItemClick" />
     </Grid>

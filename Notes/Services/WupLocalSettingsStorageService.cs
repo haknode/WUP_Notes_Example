@@ -29,7 +29,8 @@ namespace Notes.Services
             if (localSettingsContainer.Values.ContainsKey(key))
             {
                 var jsonString = localSettingsContainer.Values[key] as string;
-                return JsonConvert.DeserializeObject<T>(jsonString);
+                var obj = JsonConvert.DeserializeObject<T>(jsonString);
+                return obj;
             }
 
             return defaultValue;

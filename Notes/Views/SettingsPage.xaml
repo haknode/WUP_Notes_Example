@@ -63,16 +63,26 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
             <Button Grid.Column="0"
+                    Grid.Row="0"
                     HorizontalAlignment="Stretch"
                     Margin="10"
-                    Content="Load Notes" 
+                    Content="Load Settings" 
                     Click="{x:Bind ViewModel.LoadNotesFromStorage}"/>
             <Button Grid.Column="1"
+                    Grid.Row="0"
                     HorizontalAlignment="Stretch"
                     Margin="10"
-                    Content="Save Notes"
+                    Content="Save Settings"
                     Click="{x:Bind ViewModel.SaveNotesToStorage}"/>
+            <TextBlock Grid.Row="1"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Text="Only Settings are saved localy. Notes are saved in the cloud!"/>
         </Grid>
     </StackPanel>
 </Page>

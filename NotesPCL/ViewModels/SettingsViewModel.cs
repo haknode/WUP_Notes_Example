@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 using GalaSoft.MvvmLight;
 using Microsoft.Practices.ServiceLocation;
@@ -32,6 +33,7 @@ namespace NotesPCL.ViewModels
         public String[] SortingOrdersList { get; }
 
         public int SortingOrder { get; set; }
+
         public String TenantId { get; set; }
 
         private bool IsNumberOfNotesInListViewValid()
@@ -52,9 +54,9 @@ namespace NotesPCL.ViewModels
             return SortingOrder >= 0 && SortingOrder <= 1;
         }
 
-        public void Load()
+        public async void Load()
         {
-            Settings settings = dataService.GetSettings();
+            var settings = await dataService.GetSettings();
 
             NumberOfNotesInListView = settings.NumberOfNotesInListView.ToString();
             SortingOrder = settings.SortAsscending ? 0 : 1;
@@ -79,10 +81,12 @@ namespace NotesPCL.ViewModels
         public void LoadNotesFromStorage()
         {
             dataService.LoadFromStorage();
+            Load();
         }
 
         public void SaveNotesToStorage()
         {
+            Save();
             dataService.SaveToStorage();
         }
     }

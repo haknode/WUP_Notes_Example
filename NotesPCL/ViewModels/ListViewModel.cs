@@ -27,12 +27,13 @@ namespace NotesPCL.ViewModels
             this.dataService = dataService;
         }
 
-        public void Load()
+        public async void Load()
         {
-            numberOfDisplayedNotes = dataService.GetSettings().NumberOfNotesInListView;
-            sortAscending = dataService.GetSettings().SortAsscending;
+            var settings = await dataService.GetSettings();
+            numberOfDisplayedNotes = settings.NumberOfNotesInListView;
+            sortAscending = settings.SortAsscending;
 
-            Notes = dataService.GetNotes();
+            Notes = await dataService.GetNotes();
 
             if (sortAscending)
                 Notes = Notes.OrderBy(n => n.LastModified);
@@ -57,7 +58,7 @@ namespace NotesPCL.ViewModels
 
         public void EditNote(Note note)
         {
-            navigationService.NavigateTo(ViewNames.EditPage, note.Id);
+            navigationService.NavigateTo(ViewNames.EditPage, note);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Views;
 using NotesPCL.Models;
@@ -23,7 +24,36 @@ namespace NotesPCL.ViewModels
             this.navigationService = navigationService;
             this.dataService = dataService;
 
+            PropertyChanged += UpdateSearchResultList;
+
             ClearSearch();
+        }
+
+        private async void UpdateSearchResultList(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(SearchString) || 
+                e.PropertyName == nameof(FromDate) ||
+                e.PropertyName == nameof(ToDate))
+            {
+                var notes = await dataService.GetNotes();
+                SearchResult = notes.Where(note =>
+                {
+                    if (!string.IsNullOrEmpty(SearchString)
+                        && !note.Content.ToLower().Contains(SearchString.ToLower()))
+                        return false;
+
+                    if (FromDate.HasValue
+                        && note.LastModified.Date.CompareTo(FromDate.Value.Date) < 0)
+                        return false;
+
+                    if (ToDate.HasValue
+                        && note.LastModified.Date.CompareTo(ToDate.Value.Date) > 0)
+                        return false;
+
+                    return true;    //return all elements by default
+                });
+            }
+            
         }
 
         public string SearchString { get; set; }
@@ -34,28 +64,8 @@ namespace NotesPCL.ViewModels
         public DateTimeOffset? ToDate { get; set; }
         public DateTimeOffset ToDateMinValue => FromDate ?? DateTimeOffset.MinValue;
 
-        public IEnumerable<Note> SearchResult
-        {
-            get
-            {
-                return dataService.GetNotes().Where(note =>
-                {
-                    if (!string.IsNullOrEmpty(SearchString)
-                        && !note.Content.ToLower().Contains(SearchString.ToLower()))
-                        return false;
+        public IEnumerable<Note> SearchResult { get; set; }
 
-                    if (FromDate.HasValue 
-                        && note.LastModified.Date.CompareTo(FromDate.Value.Date) < 0)
-                        return false;
-
-                    if (ToDate.HasValue 
-                        && note.LastModified.Date.CompareTo(ToDate.Value.Date) > 0)
-                        return false;
-
-                    return true;    //return all elements by default
-                });
-            }
-        }
 
         public void ClearSearch()
         {

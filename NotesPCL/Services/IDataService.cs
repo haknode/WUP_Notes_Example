@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using NotesPCL.Models;
 
 namespace NotesPCL.Services
@@ -7,15 +8,15 @@ namespace NotesPCL.Services
     //This interface defines how we access the data
     public interface IDataService
     {
-        IEnumerable<Note> GetNotes();
-        Note GetNote(Guid id);
-        void AddOrUpdateNote(Note note);
-        void RemoveNote(Guid id);
-        void RemoveAllNotes();
-        Settings GetSettings();
-        void SetSettings(Settings newSettings);
+        Task<IEnumerable<Note>> GetNotes();
+        Task<Note> GetNote(int id);
+        Task AddNote(Note note);
+        Task UpdateNote(Note note);
+        Task RemoveNote(Note note);
+        Task<Settings> GetSettings();
+        Task SetSettings(Settings newSettings);
 
-        void SaveToStorage();
-        void LoadFromStorage();
+        Task SaveToStorage();
+        Task LoadFromStorage();
     }
 }

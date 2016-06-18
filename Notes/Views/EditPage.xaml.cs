@@ -57,9 +57,10 @@ namespace Notes.Views
             //register the OnBackRequested method to the event
             ((App)Application.Current).OnBackRequested += OnBackRequested;
 
-            if (e.Parameter is Guid)
+            var note = e.Parameter as Note;
+            if (note != null)
             {
-                ViewModel.LoadExistingNote((Guid)e.Parameter);
+                ViewModel.LoadExistingNote(note);
             }
             else
             {

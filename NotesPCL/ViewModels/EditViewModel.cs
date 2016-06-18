@@ -38,7 +38,7 @@ namespace NotesPCL.ViewModels
         public Note EditNote { get; private set; }
 
         //ObservableCollection is needed here because the mapcontrol expects one
-        public ObservableCollection<Note> AllNotes => new ObservableCollection<Note>(dataService.GetNotes());
+        public ObservableCollection<Note> AllNotes { get; set; }
 
         public double ZoomLevel { get; set; } = 13;
 
@@ -46,14 +46,21 @@ namespace NotesPCL.ViewModels
 
         public Boolean CanDelete => originalNote != null;
 
-        public void SaveNote()
+        public async void SaveNote()
         {
             //if the note is not empty, save it and navigate back
             if (CanSave)
             {
                 EditNote.LastModified = DateTime.Now;
 
-                dataService.AddOrUpdateNote(EditNote);
+                if (originalNote == null)   //new note
+                {
+                    await dataService.AddNote(EditNote);
+                }
+                else
+                {
+                    await dataService.UpdateNote(EditNote);
+                }
 
                 ClearAndGoBack();
             }
@@ -76,14 +83,15 @@ namespace NotesPCL.ViewModels
 
             ClearAndGoBack();
         }
-        public void LoadExistingNote(Guid id)
+        public async void LoadExistingNote(Note note)
         {
             Clear();
 
             //get the note but use a copy to edit
-            originalNote = dataService.GetNote(id);
+            //originalNote = await dataService.GetNote(note.Id);
+            originalNote = note;
             var clonedNote = originalNote.Clone();
-            
+
             LoadNote(clonedNote);
         }
         private Random random = new Random();
@@ -96,9 +104,11 @@ namespace NotesPCL.ViewModels
             TryGetPosition();
         }
 
-        private void LoadNote(Note note)
+        private async void LoadNote(Note note)
         {
             EditNote = note;
+            var allNotes = await dataService.GetNotes();
+            AllNotes = new ObservableCollection<Note>(allNotes);
 
             EditNote.PropertyChanged += (sender, args) =>
             {
@@ -115,7 +125,7 @@ namespace NotesPCL.ViewModels
 
                 if (confirmed)
                 {
-                    dataService.RemoveNote(EditNote.Id);
+                    await dataService.RemoveNote(EditNote);
                     ClearAndGoBack();
                 }
             }
