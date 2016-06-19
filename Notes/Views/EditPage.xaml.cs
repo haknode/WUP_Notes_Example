@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
@@ -7,6 +8,7 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
+using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Practices.ServiceLocation;
 using Notes.Converters;
@@ -20,9 +22,6 @@ namespace Notes.Views
     {
         private readonly DispatcherTimer dispatcherTimer;
 
-        private readonly MapIcon currentLocationMapIcon;
-        private readonly Geolocator geolocator;
-
         public EditPage()
         {
             InitializeComponent();
@@ -30,16 +29,6 @@ namespace Notes.Views
             dispatcherTimer = new DispatcherTimer();    //DispatcherTimer to periodically update the current time
             dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
             dispatcherTimer.Tick += (sender, o) => { ViewModel.EditNote.LastModified = DateTime.Now; };   //Update the time in the ViewModel every 1 second
-
-            currentLocationMapIcon = new MapIcon
-            {
-                Title = "You are here",
-                NormalizedAnchorPoint = new Point(0.5, 0.5),
-            };
-            MapControl.MapElements.Add(currentLocationMapIcon);
-
-
-            geolocator = new Geolocator();
         }
 
         public EditViewModel ViewModel => (EditViewModel)DataContext;
@@ -65,7 +54,7 @@ namespace Notes.Views
             else
             {
                 ViewModel.LoadEmptyNote();
-                dispatcherTimer.Start();    //start the dispatcherTimer
+                dispatcherTimer.Start();
             }
 
             base.OnNavigatedTo(e);
@@ -76,37 +65,9 @@ namespace Notes.Views
             //when the user navigates away from this page
             ((App)Application.Current).OnBackRequested -= OnBackRequested;
 
-            dispatcherTimer.Stop();  //stop the dispatcherTimer
+            dispatcherTimer.Stop();
 
             base.OnNavigatedFrom(e);
-        }
-
-        private async void CenterToCurrentLocation()
-        {
-            var access = await Geolocator.RequestAccessAsync();
-
-            if (access == GeolocationAccessStatus.Allowed)
-            {
-                var geoposition = await geolocator.GetGeopositionAsync();
-                var geopoint = geoposition.Coordinate.Point;
-
-                currentLocationMapIcon.Location = geopoint;
-
-                MapControl.Center = geopoint;
-                MapControl.ZoomLevel = 15;
-            }
-        }
-
-        private void ZoomIn()
-        {
-            if (MapControl.ZoomLevel < MapControl.MaxZoomLevel)
-                MapControl.ZoomLevel++;
-        }
-
-        private void ZoomOut()
-        {
-            if (MapControl.ZoomLevel > MapControl.MinZoomLevel)
-                MapControl.ZoomLevel--;
         }
     }
 }

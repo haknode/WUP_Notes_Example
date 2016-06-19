@@ -46,7 +46,7 @@
                       Grid.Column="1"
                       Width="150"
                       HorizontalAlignment="Right"
-                      ItemsSource="{Binding SortingOrdersList, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding SortingOrdersNames, UpdateSourceTrigger=PropertyChanged}"
                       SelectedIndex="{x:Bind ViewModel.SortingOrder, Mode=TwoWay}" />
             <TextBlock Grid.Row="3"
                        Grid.Column="0"
@@ -82,6 +82,7 @@
             <TextBlock Grid.Row="1"
                        Grid.Column="0"
                        Grid.ColumnSpan="2"
+                       TextWrapping="WrapWholeWords"
                        Text="Only Settings are saved localy. Notes are saved in the cloud!"/>
         </Grid>
     </StackPanel>

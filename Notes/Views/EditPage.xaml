@@ -2,8 +2,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
-      xmlns:models="using:NotesPCL.Models"
+      xmlns:controls="using:Notes.Controls"
       x:Class="Notes.Views.EditPage"
       mc:Ignorable="d"
       Background="White"
@@ -96,49 +95,11 @@
               RelativePanel.AlignRightWithPanel="True"
               RelativePanel.AlignLeftWithPanel="True"
               RelativePanel.Below="InputGrid">
-            <!-- Use classic binding to allow null values on the center property -->
-            <Maps:MapControl x:Name="MapControl"
-                             ZoomLevel="{x:Bind ViewModel.ZoomLevel, Mode=OneWay}"
-                             Center="{Binding EditNote.CreationLocation, Mode=OneWay, Converter={StaticResource GeoLocationToGeopointConverter}}">
-                <Maps:MapItemsControl ItemsSource="{x:Bind ViewModel.AllNotes, Mode=OneWay}">
-                    <Maps:MapItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="models:Note">
-                            <Grid Maps:MapControl.Location="{Binding CreationLocation, Converter={StaticResource GeoLocationToGeopointConverter}}"
-                                  Maps:MapControl.NormalizedAnchorPoint="0.5 1"
-                                  Visibility="{Binding CreationLocation, Converter={StaticResource GeoLocationToVisibilityConverter}}"
-                                  Width="30"
-                                  Height="30">
-                                <Image Source="../Assets/map-pin-red-hi.png" />
-                                <TextBlock Text="{x:Bind LastModified}" />
-                            </Grid>
-                        </DataTemplate>
-                    </Maps:MapItemsControl.ItemTemplate>
-                </Maps:MapItemsControl>
-            </Maps:MapControl>
-            
-            <StackPanel HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        Margin="20">
-                <Button Content="+"
-                        Width="30"
-                        Height="30"
-                        Padding="2"
-                        Click="{x:Bind ZoomIn}" />
-                <Button Content="-"
-                        Width="30"
-                        Height="30"
-                        Padding="2"
-                        Click="{x:Bind ZoomOut}" />
-                <Button Width="30"
-                        Height="30"
-                        Padding="2"
-                        Click="{x:Bind CenterToCurrentLocation}">
-                    <Image Source="../Assets/Maps_current_location.png" />
-                </Button>
-            </StackPanel>
-            
-        </Grid>
-        
-    </RelativePanel>
 
+            <!-- Use classic binding to allow null values on the center property -->
+            <controls:NotesMap Center="{Binding EditNote.CreationLocation, Mode=OneWay, Converter={StaticResource GeoLocationToGeopointConverter}}"
+                               ZoomLevel="{x:Bind ViewModel.ZoomLevel, Mode=OneWay}"
+                               Notes="{x:Bind ViewModel.AllNotes, Mode=OneWay}" />
+        </Grid>
+    </RelativePanel>
 </Page>

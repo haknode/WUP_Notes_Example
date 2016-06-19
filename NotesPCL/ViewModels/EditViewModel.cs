@@ -46,6 +46,8 @@ namespace NotesPCL.ViewModels
 
         public Boolean CanDelete => originalNote != null;
 
+        private Boolean IsNewNote => originalNote == null;
+
         public async void SaveNote()
         {
             //if the note is not empty, save it and navigate back
@@ -53,7 +55,7 @@ namespace NotesPCL.ViewModels
             {
                 EditNote.LastModified = DateTime.Now;
 
-                if (originalNote == null)   //new note
+                if (IsNewNote)   //new note
                 {
                     await dataService.AddNote(EditNote);
                 }
@@ -83,7 +85,7 @@ namespace NotesPCL.ViewModels
 
             ClearAndGoBack();
         }
-        public async void LoadExistingNote(Note note)
+        public void LoadExistingNote(Note note)
         {
             Clear();
 
@@ -94,19 +96,21 @@ namespace NotesPCL.ViewModels
 
             LoadNote(clonedNote);
         }
-        private Random random = new Random();
+
         public void LoadEmptyNote()
         {
             Clear();
 
             LoadNote(new Note());
-            //Try to get the position
+            
             TryGetPosition();
         }
 
         private async void LoadNote(Note note)
         {
             EditNote = note;
+
+            //TODO: to slow
             var allNotes = await dataService.GetNotes();
             AllNotes = new ObservableCollection<Note>(allNotes);
 

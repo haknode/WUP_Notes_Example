@@ -71,6 +71,7 @@ namespace NotesPCL.Services
             await httpClient.DeleteAsync($"{Uri}/{note.Id}");
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<Settings> GetSettings()
         {
             return settings;
@@ -91,7 +92,7 @@ namespace NotesPCL.Services
         {
             storageService.Write("Settings", GetSettings());
         }
-
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
         private class JsonContent : StringContent
         {

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using NotesPCL.Models;
 using NotesPCL.Services;
@@ -33,19 +35,22 @@ namespace NotesPCL.ViewModels
             numberOfDisplayedNotes = settings.NumberOfNotesInListView;
             sortAscending = settings.SortAsscending;
 
-            Notes = await dataService.GetNotes();
+            //get the notes from the data provider and save them in a local copy
+            //sort by creation date descending and take only the in the settings defined amount
+            var notes = await dataService.GetNotes();
 
             if (sortAscending)
-                Notes = Notes.OrderBy(n => n.LastModified);
+                notes = notes.OrderBy(n => n.LastModified);
             else
-                Notes = Notes.OrderByDescending(n => n.LastModified);
+                notes = notes.OrderByDescending(n => n.LastModified);
 
-            Notes = Notes.Take(numberOfDisplayedNotes);
+            Notes = new ObservableCollection<Note>(notes.Take(numberOfDisplayedNotes));
+
+            Messenger.Default.Send<string>("zoomToFit");
         }
 
-        //get the notes from the data provider and save them in a local copy
-        //sort by creation date descending and take only the in the settings defined amount
-        public IEnumerable<Note> Notes { get; set; }
+
+        public ObservableCollection<Note> Notes { get; set; }
 
         public string ListInfoText
         {

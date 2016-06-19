@@ -8,6 +8,7 @@
     <Application.Resources>
         <viewModel:WupViewModelLocator x:Key="ViewModelLocator" />
         <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
+        <converters:DateTimeToShortStringConverter x:Key="DateTimeToShortStringConverter" />
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converters:GeoLocationToGeopointConverter x:Key="GeoLocationToGeopointConverter" />
         <converters:GeoLocationToVisibilityConverter x:Key="GeoLocationToVisibilityConverter" />

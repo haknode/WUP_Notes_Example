@@ -1,0 +1,60 @@
+﻿<UserControl
+    x:Class="Notes.Controls.NotesMap"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Notes.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:models="using:NotesPCL.Models"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid>
+        <!-- Use classic binding to allow null values on the center property -->
+        <maps:MapControl x:Name="MapControl"
+                         Center="{Binding Center, Mode=TwoWay}"
+                         ZoomLevel="{Binding ZoomLevel, Mode=TwoWay}"
+                         Margin="0,10,0,-10">
+            <maps:MapItemsControl ItemsSource="{x:Bind Notes, Mode=OneWay}">
+                <maps:MapItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="models:Note">
+                        <StackPanel Orientation="Horizontal"
+                                    maps:MapControl.Location="{Binding CreationLocation, Converter={StaticResource GeoLocationToGeopointConverter}}"
+                                    maps:MapControl.NormalizedAnchorPoint="0.5 1"
+                                    Visibility="{Binding CreationLocation, Converter={StaticResource GeoLocationToVisibilityConverter}}">
+                            <!-- NormalizedAnchorPoint does not work for some reason -->
+                            <Image Source="../Assets/Maps_pin.png" />
+                            <TextBlock Text="{x:Bind LastModified, Converter={StaticResource DateTimeToShortStringConverter}}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </maps:MapItemsControl.ItemTemplate>
+            </maps:MapItemsControl>
+        </maps:MapControl>
+
+        <StackPanel HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Margin="20">
+            <Button Content="+"
+                    Width="30"
+                    Height="30"
+                    Padding="2"
+                    Click="{x:Bind ZoomIn}" />
+            <Button Content="-"
+                    Width="30"
+                    Height="30"
+                    Padding="2"
+                    Click="{x:Bind ZoomOut}" />
+            <Button Width="30"
+                    Height="30"
+                    Padding="2"
+                    Click="{x:Bind CenterToCurrentLocation}">
+                <Image Source="../Assets/Maps_current_location.png" />
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>
+
+
+

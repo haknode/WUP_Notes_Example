@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
 using GalaSoft.MvvmLight;
-using Microsoft.Practices.ServiceLocation;
 using NotesPCL.Models;
 using NotesPCL.Services;
 
@@ -21,7 +17,7 @@ namespace NotesPCL.ViewModels
         {
             this.dataService = dataService;
 
-            SortingOrdersList = new string[]
+            SortingOrdersNames = new string[]
             {
                 "Ascending",
                 "Descending",
@@ -30,7 +26,7 @@ namespace NotesPCL.ViewModels
 
         public String NumberOfNotesInListView { get; set; }
 
-        public String[] SortingOrdersList { get; }
+        public String[] SortingOrdersNames { get; }
 
         public int SortingOrder { get; set; }
 
@@ -54,6 +50,11 @@ namespace NotesPCL.ViewModels
             return SortingOrder >= 0 && SortingOrder <= 1;
         }
 
+        private bool IsTenantIdValid()
+        {
+            return !String.IsNullOrWhiteSpace(TenantId);
+        }
+
         public async void Load()
         {
             var settings = await dataService.GetSettings();
@@ -65,7 +66,7 @@ namespace NotesPCL.ViewModels
 
         public void Save()
         {
-            if (IsNumberOfNotesInListViewValid() && IsSortingOrderValid())
+            if (IsNumberOfNotesInListViewValid() && IsSortingOrderValid() && IsTenantIdValid())
             {
                 var newSettings = new Settings
                 {
