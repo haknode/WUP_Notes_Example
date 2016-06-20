@@ -75,7 +75,8 @@
               RelativePanel.Below="NotesList">
 
             <!-- Use classic binding to allow null values on the center property -->
-            <controls:NotesMap Notes="{x:Bind ViewModel.Notes, Mode=OneWay}" />
+            <controls:NotesMap Notes="{x:Bind ViewModel.Notes, Mode=OneWay}" 
+                               MapPinClicked="NotesMap_OnMapPinClicked" />
         </Grid>
     </RelativePanel>
 </Page>

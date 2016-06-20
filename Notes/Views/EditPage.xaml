@@ -97,8 +97,8 @@
               RelativePanel.Below="InputGrid">
 
             <!-- Use classic binding to allow null values on the center property -->
-            <controls:NotesMap Center="{Binding EditNote.CreationLocation, Mode=OneWay, Converter={StaticResource GeoLocationToGeopointConverter}}"
-                               ZoomLevel="{x:Bind ViewModel.ZoomLevel, Mode=OneWay}"
+            <controls:NotesMap MapCenter="{Binding EditNote.CreationLocation, Mode=OneWay, Converter={StaticResource GeoLocationToGeopointConverter}}"
+                               MapZoomLevel="{x:Bind ViewModel.ZoomLevel, Mode=OneWay}"
                                Notes="{x:Bind ViewModel.AllNotes, Mode=OneWay}" />
         </Grid>
     </RelativePanel>

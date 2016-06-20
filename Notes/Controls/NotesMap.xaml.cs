@@ -9,6 +9,7 @@ using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
+using Windows.UI.Xaml.Input;
 using GalaSoft.MvvmLight.Messaging;
 using NotesPCL.Models;
 
@@ -34,7 +35,12 @@ namespace Notes.Controls
                 NormalizedAnchorPoint = new Point(0.5, 0.5),
             };
 
-            Messenger.Default.Register<string>(this, ZoomToFitAllNotePins);
+            Messenger.Default.Register<string>(this, (message) =>
+            {
+                if (message == "zoomToFit")
+                    ZoomToFitAllNotePins();
+
+            });
 
             Loaded += (sender, args) =>
             {
@@ -42,16 +48,16 @@ namespace Notes.Controls
             };
         }
 
-        public Geopoint Center
+        public Geopoint MapCenter
         {
-            get { return (Geopoint)GetValue(CenterProperty); }
-            set { SetValue(CenterProperty, value); }
+            get { return (Geopoint)GetValue(MapCenterProperty); }
+            set { SetValue(MapCenterProperty, value); }
         }
 
-        public double ZoomLevel
+        public double MapZoomLevel
         {
-            get { return (double)GetValue(ZoomLevelProperty); }
-            set { SetValue(ZoomLevelProperty, value); }
+            get { return (double)GetValue(MapZoomLevelProperty); }
+            set { SetValue(MapZoomLevelProperty, value); }
         }
 
         public ObservableCollection<Note> Notes
@@ -60,14 +66,16 @@ namespace Notes.Controls
             set { SetValue(NotesProperty, value); }
         }
 
-        public static readonly DependencyProperty CenterProperty = 
-            DependencyProperty.Register("Center", typeof(Geopoint), typeof(NotesMap), new PropertyMetadata(default(Geopoint)));
+        public static readonly DependencyProperty MapCenterProperty =
+            DependencyProperty.Register("MapCenter", typeof(Geopoint), typeof(NotesMap), new PropertyMetadata(default(Geopoint)));
 
-        public static readonly DependencyProperty ZoomLevelProperty = 
-            DependencyProperty.Register("ZoomLevel", typeof(double), typeof(NotesMap), new PropertyMetadata(default(double)));
+        public static readonly DependencyProperty MapZoomLevelProperty =
+            DependencyProperty.Register("MapZoomLevel", typeof(double), typeof(NotesMap), new PropertyMetadata(default(double)));
 
-        public static readonly DependencyProperty NotesProperty = 
+        public static readonly DependencyProperty NotesProperty =
             DependencyProperty.Register("Notes", typeof(ObservableCollection<Note>), typeof(NotesMap), new PropertyMetadata(default(ObservableCollection<Note>)));
+
+        public event EventHandler<Note> MapPinClicked;
 
         private async void DrawCurrentLocationIcon()
         {
@@ -94,7 +102,7 @@ namespace Notes.Controls
             if (currentLocation == null)
                 return;
 
-            Center = currentLocation;
+            MapCenter = currentLocation;
             await MapControl.TryZoomToAsync(15);
         }
 
@@ -108,11 +116,8 @@ namespace Notes.Controls
             await MapControl.TryZoomOutAsync();
         }
 
-        private async void ZoomToFitAllNotePins(string message)
+        private async void ZoomToFitAllNotePins()
         {
-            if (message != "zoomToFit")
-                return;
-
             var basicGeopositions = Notes.Where(note => note.CreationLocation.IsValid)
                                                         .Select(note => new BasicGeoposition
                                                         {
@@ -122,7 +127,15 @@ namespace Notes.Controls
 
             var box = GeoboundingBox.TryCompute(basicGeopositions);
 
-            await MapControl.TrySetViewBoundsAsync(box, new Thickness(100), MapAnimationKind.Linear);
+            await MapControl.TrySetViewBoundsAsync(box, new Thickness(100), MapAnimationKind.None);
+        }
+
+        private void UIElement_OnPointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            var note = ((StackPanel)sender).DataContext as Note;
+
+            if (note != null)
+                MapPinClicked?.Invoke(this, note);
         }
     }
 }

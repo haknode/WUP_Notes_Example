@@ -103,6 +103,7 @@
     <Compile Include="Converters\DateTimeToStringConverter.cs" />
     <Compile Include="Converters\GeoLocationToVisibilityConverter.cs" />
     <Compile Include="Converters\GeoLocationToGeopointConverter.cs" />
+    <Compile Include="Converters\StringToShortStringConverter.cs" />
     <Compile Include="Services\WupLocalFolderStorageService.cs" />
     <Compile Include="Services\WupLocalSettingsStorageService.cs" />
     <Compile Include="Services\WupLocationService.cs" />

@@ -12,6 +12,7 @@
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converters:GeoLocationToGeopointConverter x:Key="GeoLocationToGeopointConverter" />
         <converters:GeoLocationToVisibilityConverter x:Key="GeoLocationToVisibilityConverter" />
+        <converters:StringToShortStringConverter x:Key="StringToShortStringConverter" />
 
         <!-- Style used to strech the items in a listview -->
         <Style x:Key="StretchedItemStyle"

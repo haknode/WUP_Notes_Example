@@ -29,5 +29,10 @@ namespace Notes.Views
 
             ViewModel.EditNote(note);
         }
+
+        private void NotesMap_OnMapPinClicked(object sender, Note note)
+        {
+            ViewModel.EditNote(note);
+        }
     }
 }

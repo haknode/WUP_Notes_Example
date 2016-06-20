@@ -40,7 +40,7 @@ namespace NotesPCL.ViewModels
         //ObservableCollection is needed here because the mapcontrol expects one
         public ObservableCollection<Note> AllNotes { get; set; }
 
-        public double ZoomLevel { get; set; } = 13;
+        public double ZoomLevel => IsNewNote ? 0 : 13;
 
         public Boolean CanSave => !string.IsNullOrWhiteSpace(EditNote?.Content) && EditNote?.Content != originalNote?.Content;
 
@@ -102,7 +102,7 @@ namespace NotesPCL.ViewModels
             Clear();
 
             LoadNote(new Note());
-            
+
             TryGetPosition();
         }
 
