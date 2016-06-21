@@ -25,7 +25,16 @@
         </CommandBar>
     </Page.TopAppBar>
 
-    <RelativePanel>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="Column1" />
+            <ColumnDefinition x:Name="Column2" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
@@ -33,16 +42,22 @@
                         <AdaptiveTrigger MinWindowWidth="800" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="InputGrid.(RelativePanel.AlignBottomWithPanel)"
-                                Value="True" />
-                        <Setter Target="InputGrid.(RelativePanel.AlignRightWithPanel)"
-                                Value="False" />
-                        <Setter Target="MapContainer.(RelativePanel.AlignTopWithPanel)"
-                                Value="True" />
-                        <Setter Target="MapContainer.(RelativePanel.AlignLeftWithPanel)"
-                                Value="False" />
-                        <Setter Target="MapContainer.(RelativePanel.RightOf)"
-                                Value="InputGrid" />
+                        <Setter Target="MapContainer.(Grid.Column)"
+                                Value="1" />
+                        <Setter Target="MapContainer.(Grid.Row)"
+                                Value="0" />
+                        <Setter Target="MapContainer.(Grid.ColumnSpan)"
+                                Value="1" />
+                        <Setter Target="MapContainer.(Grid.RowSpan)"
+                                Value="2" />
+                        <Setter Target="InputGrid.(Grid.ColumnSpan)"
+                                Value="1" />
+                        <Setter Target="InputGrid.(Grid.RowSpan)"
+                                Value="2" />
+                        <Setter Target="Column1.Width"
+                                Value="1*" />
+                        <Setter Target="Column2.Width"
+                                Value="2*" />
                     </VisualState.Setters>
                 </VisualState>
 
@@ -56,11 +71,9 @@
         </VisualStateManager.VisualStateGroups>
 
         <Grid x:Name="InputGrid"
-              RelativePanel.AlignTopWithPanel="True"
-              RelativePanel.AlignBottomWithPanel="False"
-              RelativePanel.AlignRightWithPanel="True"
-              RelativePanel.AlignLeftWithPanel="True"
-              MinWidth="300">
+              Grid.Column="0"
+              Grid.Row="0"
+              Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -90,16 +103,14 @@
         </Grid>
 
         <Grid x:Name="MapContainer"
-              RelativePanel.AlignTopWithPanel="False"
-              RelativePanel.AlignBottomWithPanel="True"
-              RelativePanel.AlignRightWithPanel="True"
-              RelativePanel.AlignLeftWithPanel="True"
-              RelativePanel.Below="InputGrid">
+              Grid.Column="0"
+              Grid.Row="1"
+              Grid.ColumnSpan="2" >
 
             <!-- Use classic binding to allow null values on the center property -->
             <controls:NotesMap MapCenter="{Binding EditNote.CreationLocation, Mode=OneWay, Converter={StaticResource GeoLocationToGeopointConverter}}"
                                MapZoomLevel="{x:Bind ViewModel.ZoomLevel, Mode=OneWay}"
                                Notes="{x:Bind ViewModel.AllNotes, Mode=OneWay}" />
         </Grid>
-    </RelativePanel>
+    </Grid>
 </Page>

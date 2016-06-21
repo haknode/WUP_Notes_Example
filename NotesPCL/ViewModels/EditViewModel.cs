@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using NotesPCL.Models;
 using NotesPCL.Services;
@@ -112,6 +113,9 @@ namespace NotesPCL.ViewModels
 
             //TODO: to slow
             var allNotes = await dataService.GetNotes();
+            if(allNotes == null)
+                return;
+
             AllNotes = new ObservableCollection<Note>(allNotes);
 
             EditNote.PropertyChanged += (sender, args) =>
@@ -157,6 +161,8 @@ namespace NotesPCL.ViewModels
 
             //Get Location
             EditNote.CreationLocation = await locationService.GetCurrentLocationAsync(cancellationTokenSource.Token);
+            if(EditNote.CreationLocation != null && EditNote.CreationLocation.IsValid)
+                Messenger.Default.Send<string>("centerToCurrentLocation");
         }
     }
 }

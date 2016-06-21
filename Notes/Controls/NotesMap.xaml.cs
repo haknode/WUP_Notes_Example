@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Storage.Streams;
@@ -35,16 +36,16 @@ namespace Notes.Controls
                 NormalizedAnchorPoint = new Point(0.5, 0.5),
             };
 
-            Messenger.Default.Register<string>(this, (message) =>
-            {
-                if (message == "zoomToFit")
-                    ZoomToFitAllNotePins();
-
-            });
-
             Loaded += (sender, args) =>
             {
+                Messenger.Default.Register<string>(this, RecieveMessage);
+
                 DrawCurrentLocationIcon();
+            };
+
+            Unloaded += (sender, args) =>
+            {
+                Messenger.Default.Unregister<string>(this, RecieveMessage);
             };
         }
 
@@ -77,7 +78,7 @@ namespace Notes.Controls
 
         public event EventHandler<Note> MapPinClicked;
 
-        private async void DrawCurrentLocationIcon()
+        private async Task DrawCurrentLocationIcon()
         {
             var access = await Geolocator.RequestAccessAsync();
 
@@ -97,13 +98,25 @@ namespace Notes.Controls
             }
         }
 
+        private void RecieveMessage(string message)
+        {
+            if (message == "zoomToFit")
+                ZoomToFitAllNotePins();
+
+            else if (message == "centerToCurrentLocation")
+                CenterToCurrentLocation();
+
+        }
+
         private async void CenterToCurrentLocation()
         {
+            await DrawCurrentLocationIcon();
+
             if (currentLocation == null)
                 return;
 
             MapCenter = currentLocation;
-            await MapControl.TryZoomToAsync(15);
+            await MapControl.TryZoomToAsync(13);
         }
 
         private async void ZoomIn()
@@ -118,6 +131,9 @@ namespace Notes.Controls
 
         private async void ZoomToFitAllNotePins()
         {
+            if (Notes == null)
+                return;
+
             var basicGeopositions = Notes.Where(note => note.CreationLocation.IsValid)
                                                         .Select(note => new BasicGeoposition
                                                         {
@@ -127,7 +143,7 @@ namespace Notes.Controls
 
             var box = GeoboundingBox.TryCompute(basicGeopositions);
 
-            await MapControl.TrySetViewBoundsAsync(box, new Thickness(100), MapAnimationKind.None);
+            await MapControl.TrySetViewBoundsAsync(box, new Thickness(70), MapAnimationKind.None);
         }
 
         private void UIElement_OnPointerPressed(object sender, PointerRoutedEventArgs e)
