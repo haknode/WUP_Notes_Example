@@ -36,11 +36,11 @@ namespace Notes.Controls
                 NormalizedAnchorPoint = new Point(0.5, 0.5),
             };
 
-            Loaded += (sender, args) =>
+            Loaded += async (sender, args) =>
             {
                 Messenger.Default.Register<string>(this, RecieveMessage);
 
-                DrawCurrentLocationIcon();
+                await DrawCurrentLocationIcon();
             };
 
             Unloaded += (sender, args) =>
@@ -78,6 +78,16 @@ namespace Notes.Controls
 
         public event EventHandler<Note> MapPinClicked;
 
+        private void RecieveMessage(string message)
+        {
+            if (message == "zoomToFit")
+                ZoomToFitAllNotePins();
+
+            else if (message == "centerToCurrentLocation")
+                CenterToCurrentLocation();
+
+        }
+
         private async Task DrawCurrentLocationIcon()
         {
             var access = await Geolocator.RequestAccessAsync();
@@ -96,16 +106,6 @@ namespace Notes.Controls
             {
                 currentLocation = null;
             }
-        }
-
-        private void RecieveMessage(string message)
-        {
-            if (message == "zoomToFit")
-                ZoomToFitAllNotePins();
-
-            else if (message == "centerToCurrentLocation")
-                CenterToCurrentLocation();
-
         }
 
         private async void CenterToCurrentLocation()
@@ -146,12 +146,15 @@ namespace Notes.Controls
             await MapControl.TrySetViewBoundsAsync(box, new Thickness(70), MapAnimationKind.None);
         }
 
+        //Handles clicks on note pins on the map
         private void UIElement_OnPointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            var note = ((StackPanel)sender).DataContext as Note;
+            var stackPanel = sender as StackPanel;
+
+            var note = stackPanel?.DataContext as Note;
 
             if (note != null)
-                MapPinClicked?.Invoke(this, note);
+                MapPinClicked?.Invoke(this, note);  //Forward clicked note to anyone who registered for the event
         }
     }
 }

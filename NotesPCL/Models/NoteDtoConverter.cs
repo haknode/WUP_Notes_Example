@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace NotesPCL.Models
 {
+    //Provides static methods to convert between Note and NoteDto objects
     public class NoteDtoConverter
     {
         public static NoteDto NoteToDto(Note note, String tenantId)

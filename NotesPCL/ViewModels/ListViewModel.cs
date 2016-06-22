@@ -46,9 +46,9 @@ namespace NotesPCL.ViewModels
 
             Notes = new ObservableCollection<Note>(notes.Take(numberOfDisplayedNotes));
 
+            //when all notes are loaded, message the map to zoom to fit all pins
             Messenger.Default.Send<string>("zoomToFit");
         }
-
 
         public ObservableCollection<Note> Notes { get; set; }
 

@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Windows.Devices.Geolocation;
-using Windows.Foundation;
-using Windows.Storage.Streams;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Maps;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Navigation;
-using Microsoft.Practices.ServiceLocation;
-using Notes.Converters;
 using NotesPCL.Models;
-using NotesPCL.Services;
 using NotesPCL.ViewModels;
 
 namespace Notes.Views
@@ -46,9 +36,11 @@ namespace Notes.Views
             //register the OnBackRequested method to the event
             ((App)Application.Current).OnBackRequested += OnBackRequested;
 
+            //if the caller passed an argument and it is a note
             var note = e.Parameter as Note;
             if (note != null)
             {
+                //load the note to edit it
                 ViewModel.LoadExistingNote(note);
             }
             else

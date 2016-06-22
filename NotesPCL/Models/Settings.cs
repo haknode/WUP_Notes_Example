@@ -13,7 +13,7 @@ namespace NotesPCL.Models
         {
             NumberOfNotesInListView = 10,
             SortAsscending = false,
-            DbTenantId = "S1510237036",
+            DbTenantId = "S1510237036", //Default tenant id is the matrikel number
         };
     }
 }

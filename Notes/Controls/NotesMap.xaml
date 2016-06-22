@@ -32,6 +32,7 @@
             </maps:MapItemsControl>
         </maps:MapControl>
 
+        <!-- Control buttons for the map -->
         <StackPanel HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     Margin="20">

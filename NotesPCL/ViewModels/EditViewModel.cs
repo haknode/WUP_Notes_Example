@@ -21,7 +21,7 @@ namespace NotesPCL.ViewModels
         private readonly ILocationService locationService;
         private readonly INavigationService navigationService;
 
-        private Note originalNote;
+        private Note originalNote;  //if we are editing an existing note, this variable stores the original and EditNote only contains a copy
 
         private CancellationTokenSource cancellationTokenSource;
 
@@ -36,7 +36,7 @@ namespace NotesPCL.ViewModels
             Clear();
         }
 
-        public Note EditNote { get; private set; }
+        public Note EditNote { get; private set; }  //Note object to edit (only a copy if it is an existing note)
 
         //ObservableCollection is needed here because the mapcontrol expects one
         public ObservableCollection<Note> AllNotes { get; set; }
@@ -58,10 +58,12 @@ namespace NotesPCL.ViewModels
 
                 if (IsNewNote)   //new note
                 {
+                    //TODO: show loading indicator
                     await dataService.AddNote(EditNote);
                 }
                 else
                 {
+                    //TODO: show loading indicator
                     await dataService.UpdateNote(EditNote);
                 }
 
@@ -91,7 +93,7 @@ namespace NotesPCL.ViewModels
             Clear();
 
             //get the note but use a copy to edit
-            //originalNote = await dataService.GetNote(note.Id);
+            //we could also load the note newly from the server: originalNote = await dataService.GetNote(note.Id);
             originalNote = note;
             var clonedNote = originalNote.Clone();
 
@@ -104,6 +106,8 @@ namespace NotesPCL.ViewModels
 
             LoadNote(new Note());
 
+            //Position is only needed for new notes
+            //Try to get the position as soon as possible
             TryGetPosition();
         }
 
@@ -111,13 +115,16 @@ namespace NotesPCL.ViewModels
         {
             EditNote = note;
 
-            //TODO: to slow
+            //TO display all note pins on the map, we need a list of all notes
+            //TODO: to slow, dataServie should cache the notes
+            //TODO: display loading indicator
             var allNotes = await dataService.GetNotes();
             if(allNotes == null)
                 return;
 
             AllNotes = new ObservableCollection<Note>(allNotes);
 
+            //CanSave changes every time the EditNote changes
             EditNote.PropertyChanged += (sender, args) =>
             {
                 RaisePropertyChanged(() => CanSave);
@@ -133,6 +140,7 @@ namespace NotesPCL.ViewModels
 
                 if (confirmed)
                 {
+                    //TODO: schow loading icon
                     await dataService.RemoveNote(EditNote);
                     ClearAndGoBack();
                 }
@@ -151,6 +159,7 @@ namespace NotesPCL.ViewModels
             EditNote = null;
             originalNote = null;
 
+            //cancel the gps operation if we leave this page
             cancellationTokenSource?.Cancel(); //Cancel GetCurrentLocation operation if any
         }
 

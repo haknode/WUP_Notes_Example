@@ -24,6 +24,8 @@ namespace Notes.Services
             return GetCurrentLocationAsync(cancellationToken, Int32.MaxValue);
         }
 
+
+        //Get the current location with a cancellation token and a timout
         public async Task<GeoLocation> GetCurrentLocationAsync(CancellationToken cancellationToken, int timeout)
         {
             try
@@ -38,6 +40,7 @@ namespace Notes.Services
                     {
                         var geoposition = getGeopositonTask.Result.Coordinate.Point.Position;
 
+                        //Use custom class to store coordinates, because geopoint is not available in PCLs
                         return new GeoLocation(geoposition.Latitude, geoposition.Longitude);
                     }
 

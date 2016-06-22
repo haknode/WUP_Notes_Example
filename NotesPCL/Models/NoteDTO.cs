@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace NotesPCL.Models
 {
+    //Note class as it is provided by the REST API (Data Transfer Object)
+    //A Note is converted into a NoteDto before sending it to the REST API and vice versa
     public class NoteDto
     {
         public int Id { get; set; }
