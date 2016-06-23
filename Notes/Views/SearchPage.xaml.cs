@@ -21,6 +21,8 @@ namespace Notes.Views
                 ViewModel.ClearSearch();
             }
 
+            ViewModel.LoadNotes();
+
             base.OnNavigatedTo(e);
         }
 

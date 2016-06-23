@@ -85,9 +85,22 @@
               Grid.Row="1"
               Grid.ColumnSpan="2">
 
+            <!-- Visual Designer sometimes shows a warning for the NotesMap Control, but compiling und executing works -->
+
             <!-- Use classic binding to allow null values on the center property -->
             <controls:NotesMap Notes="{x:Bind ViewModel.Notes, Mode=OneWay}" 
                                MapPinClicked="NotesMap_OnMapPinClicked" />
         </Grid>
+        
+        <ProgressRing Grid.Row="0"
+                      Grid.Column="0"
+                      Grid.RowSpan="2"
+                      Grid.ColumnSpan="2"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      Width="50"
+                      Height="50"
+                      IsActive="{x:Bind ViewModel.IsProgressRingActive, Mode=OneWay}"
+                      Foreground="Black" />
     </Grid>
 </Page>

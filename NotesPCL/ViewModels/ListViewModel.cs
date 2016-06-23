@@ -35,6 +35,9 @@ namespace NotesPCL.ViewModels
             numberOfDisplayedNotes = settings.NumberOfNotesInListView;
             sortAscending = settings.SortAsscending;
 
+            IsProgressRingActive = true;
+
+            Notes = null;
             //get the notes from the data provider and save them in a local copy
             //sort by creation date descending and take only the in the settings defined amount
             var notes = await dataService.GetNotes();
@@ -46,11 +49,14 @@ namespace NotesPCL.ViewModels
 
             Notes = new ObservableCollection<Note>(notes.Take(numberOfDisplayedNotes));
 
+            IsProgressRingActive = false;
             //when all notes are loaded, message the map to zoom to fit all pins
             Messenger.Default.Send<string>("zoomToFit");
         }
 
         public ObservableCollection<Note> Notes { get; set; }
+
+        public Boolean IsProgressRingActive { get; set; } = false;
 
         public string ListInfoText
         {
@@ -63,6 +69,9 @@ namespace NotesPCL.ViewModels
 
         public void EditNote(Note note)
         {
+            if(note == null)
+                return;
+
             navigationService.NavigateTo(ViewNames.EditPage, note);
         }
     }

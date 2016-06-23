@@ -41,13 +41,15 @@ namespace NotesPCL.ViewModels
         //ObservableCollection is needed here because the mapcontrol expects one
         public ObservableCollection<Note> AllNotes { get; set; }
 
-        public double ZoomLevel => IsNewNote ? 0 : 13;
+        public double ZoomLevel => IsNewNote || (EditNote != null && !EditNote.CreationLocation.IsValid) ? 0 : 13;
 
         public Boolean CanSave => !string.IsNullOrWhiteSpace(EditNote?.Content) && EditNote?.Content != originalNote?.Content;
 
         public Boolean CanDelete => originalNote != null;
 
         private Boolean IsNewNote => originalNote == null;
+
+        public Boolean IsProgressRingActive { get; set; } = false;
 
         public async void SaveNote()
         {
@@ -56,17 +58,18 @@ namespace NotesPCL.ViewModels
             {
                 EditNote.LastModified = DateTime.Now;
 
+                IsProgressRingActive = true;
+
                 if (IsNewNote)   //new note
                 {
-                    //TODO: show loading indicator
                     await dataService.AddNote(EditNote);
                 }
                 else
                 {
-                    //TODO: show loading indicator
                     await dataService.UpdateNote(EditNote);
                 }
 
+                
                 ClearAndGoBack();
             }
         }
@@ -113,22 +116,25 @@ namespace NotesPCL.ViewModels
 
         private async void LoadNote(Note note)
         {
+            if(note == null)
+                note = new Note();
+
             EditNote = note;
-
-            //TO display all note pins on the map, we need a list of all notes
-            //TODO: to slow, dataServie should cache the notes
-            //TODO: display loading indicator
-            var allNotes = await dataService.GetNotes();
-            if(allNotes == null)
-                return;
-
-            AllNotes = new ObservableCollection<Note>(allNotes);
 
             //CanSave changes every time the EditNote changes
             EditNote.PropertyChanged += (sender, args) =>
             {
                 RaisePropertyChanged(() => CanSave);
             };
+
+
+            //TO display all note pins on the map, we need a list of all notes
+            //TODO: to slow, dataServie should cache the notes
+            var allNotes = await dataService.GetNotes();
+            if(allNotes == null)
+                return;
+
+            AllNotes = new ObservableCollection<Note>(allNotes);
         }
 
         public async void DeleteNote()
@@ -140,7 +146,7 @@ namespace NotesPCL.ViewModels
 
                 if (confirmed)
                 {
-                    //TODO: schow loading icon
+                    IsProgressRingActive = true;
                     await dataService.RemoveNote(EditNote);
                     ClearAndGoBack();
                 }
@@ -158,6 +164,8 @@ namespace NotesPCL.ViewModels
         {
             EditNote = null;
             originalNote = null;
+
+            IsProgressRingActive = false;
 
             //cancel the gps operation if we leave this page
             cancellationTokenSource?.Cancel(); //Cancel GetCurrentLocation operation if any

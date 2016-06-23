@@ -54,5 +54,14 @@
                   IsItemClickEnabled="True"
                   ItemClick="NotesListView_OnItemClick"/>
 
+        <ProgressRing Grid.Row="0"
+                      Grid.Column="0"
+                      Grid.RowSpan="4"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      Width="50"
+                      Height="50"
+                      IsActive="{x:Bind ViewModel.IsProgressRingActive, Mode=OneWay}"
+                      Foreground="Black" />
     </Grid>
 </Page>

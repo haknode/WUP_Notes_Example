@@ -22,6 +22,7 @@ namespace Notes.Converters
                                         {
                                             Latitude = geoLocation.Latitude,
                                             Longitude = geoLocation.Longitude,
+                                            Altitude = 0,
                                         }, AltitudeReferenceSystem.Terrain);
 
                 return new Geopoint(new BasicGeoposition

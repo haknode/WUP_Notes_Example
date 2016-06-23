@@ -90,7 +90,8 @@ namespace NotesPCL.Services
 
         public async Task SaveToStorage()
         {
-            storageService.Write("Settings", GetSettings());
+            var s = await GetSettings();
+            storageService.Write("Settings", s);
         }
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
