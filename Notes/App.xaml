@@ -1,15 +1,18 @@
 ﻿<Application x:Class="Notes.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:converter="using:Notes.Converter"
-             xmlns:model="using:NotesPCL.Model"
-             xmlns:viewModel="using:Notes.ViewModel"
+             xmlns:converters="using:Notes.Converters"
+             xmlns:viewModel="using:Notes.ViewModels"
              RequestedTheme="Light">
 
     <Application.Resources>
-        <viewModel:ViewModelLocator x:Key="ViewModelLocator" />
-        <converter:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
-        <converter:BoolToNullableBoolConverter x:Key="BoolToNullableBoolConverter" />
+        <viewModel:WupViewModelLocator x:Key="ViewModelLocator" />
+        <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
+        <converters:DateTimeToShortStringConverter x:Key="DateTimeToShortStringConverter" />
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:GeoLocationToGeopointConverter x:Key="GeoLocationToGeopointConverter" />
+        <converters:GeoLocationToVisibilityConverter x:Key="GeoLocationToVisibilityConverter" />
+        <converters:StringToShortStringConverter x:Key="StringToShortStringConverter" />
 
         <!-- Style used to strech the items in a listview -->
         <Style x:Key="StretchedItemStyle"
@@ -28,7 +31,7 @@
                 <TextBlock Grid.Column="0"
                            Text="{Binding Content}" />
                 <TextBlock Grid.Column="1"
-                           Text="{Binding Created, Converter={StaticResource DateTimeToStringConverter}}"
+                           Text="{Binding LastModified, Converter={StaticResource DateTimeToStringConverter}}"
                            TextAlignment="Right" />
             </Grid>
         </DataTemplate>
